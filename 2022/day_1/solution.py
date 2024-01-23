@@ -25,8 +25,6 @@ def part_2(filename: str):
 
 
 if __name__ == '__main__':
-    with open("data.txt", "w") as f:
-        f.write("AAAA PERSE KÜLL!!!")
     print(part_1("data.txt"))
     print(part_2("data.txt"))
 

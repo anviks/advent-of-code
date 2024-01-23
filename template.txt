@@ -1,0 +1,12 @@
+from utils_anviks.decorators import read_data, stopwatch
+
+
+@read_data
+@stopwatch
+def solution(data: list[str], part: int):
+    return data
+
+
+if __name__ == '__main__':
+    print(solution(1))
+    print(solution(2))
