@@ -1,4 +1,4 @@
-from utils_anviks.decorators import read_data, stopwatch
+from utils_anviks import read_data, stopwatch
 
 
 @read_data
