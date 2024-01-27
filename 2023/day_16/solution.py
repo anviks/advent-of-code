@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import defaultdict
 from enum import Enum
 
 from utils_anviks.decorators import read_data, stopwatch
@@ -33,10 +34,7 @@ class Direction(Enum):
 
 
 def get_energized_tile_count(tiles: list[list[str]], direction: Direction, i: int, j: int) -> int:
-    tiles = walk(tiles, direction, i, j)
-    tile_coords = {(t[1], t[2]) for t in tiles}
-
-    return len(tile_coords)
+    return len(walk(tiles, direction, i, j))
 
 
 @read_data('data.txt', sep2='')
@@ -55,16 +53,14 @@ def solution(data: list[list[str]], part: int):
             max_tiles = max(max_tiles, get_energized_tile_count(data, Direction.DOWN, 0, j))
             max_tiles = max(max_tiles, get_energized_tile_count(data, Direction.UP, len(data) - 1, j))
 
-    with open('output.txt', 'w') as f:
-        f.write('\n'.join(''.join(row) for row in data))
-
     return max_tiles
 
 
-def walk(tile_matrix: list[list[str]], direction: Direction, i: int = 0, j: int = 0, tiles: set = None) -> set:
+def walk(tile_matrix: list[list[str]], direction: Direction, i: int = 0, j: int = 0, tiles: set = None) -> dict[tuple[int, int], set[Direction]]:
     if tiles is None:
-        tiles = set()
-    tiles.add((direction, i, j))
+        tiles = defaultdict(set)
+
+    tiles[(i, j)].add(direction)
 
     while True:
         match tile_matrix[i][j]:
@@ -84,10 +80,10 @@ def walk(tile_matrix: list[list[str]], direction: Direction, i: int = 0, j: int 
         i, j = direction.apply(i, j)
 
         if (i < 0 or j < 0 or i >= len(tile_matrix) or j >= len(tile_matrix[0])
-                or (direction, i, j) in tiles):
+                or direction in tiles[(i, j)]):
             break
 
-        tiles.add((direction, i, j))
+        tiles[(i, j)].add(direction)
 
     return tiles
 
