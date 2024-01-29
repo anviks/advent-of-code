@@ -33,10 +33,6 @@ class Direction(Enum):
         }[self]
 
 
-def get_energized_tile_count(tiles: list[list[str]], direction: Direction, i: int, j: int) -> int:
-    return len(walk(tiles, direction, i, j))
-
-
 @read_data('data.txt', sep2='')
 @stopwatch
 def solution(data: list[list[str]], part: int):
@@ -54,6 +50,10 @@ def solution(data: list[list[str]], part: int):
             max_tiles = max(max_tiles, get_energized_tile_count(data, Direction.UP, len(data) - 1, j))
 
     return max_tiles
+
+
+def get_energized_tile_count(tiles: list[list[str]], direction: Direction, i: int, j: int) -> int:
+    return len(walk(tiles, direction, i, j))
 
 
 def walk(tile_matrix: list[list[str]], direction: Direction, i: int = 0, j: int = 0, tiles: set = None) -> dict[tuple[int, int], set[Direction]]:
@@ -89,5 +89,5 @@ def walk(tile_matrix: list[list[str]], direction: Direction, i: int = 0, j: int 
 
 
 if __name__ == '__main__':
-    print(solution(1))  # 7242
-    print(solution(2))  # 7572
+    print(solution(1))  # 7242  0.012s
+    print(solution(2))  # 7572  3.42-3.50s
