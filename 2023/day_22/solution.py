@@ -1,15 +1,17 @@
 from collections import deque
 
 import networkx as nx
-from utils_anviks import read_data, stopwatch
-
-from coordinates import Coordinate3D
+from utils_anviks import read_data, stopwatch, Coordinate3D
 
 
 class Brick:
     def __init__(self, start: Coordinate3D, end: Coordinate3D):
         self.start = start
         self.end = end
+
+    def move(self, *, x: int = 0, y: int = 0, z: int = 0):
+        self.start += (x, y, z)
+        self.end += (x, y, z)
 
     def __contains__(self, item):
         if not isinstance(item, Coordinate3D):
@@ -64,7 +66,7 @@ def solution(data: list[list[str]], part: int):
         bricks_below = set()
 
         for coord in tuple(brick):
-            area, _ = coord.extract_axis()
+            area, _ = coord.extract_height()
             supporting_brick = highest_points.get(area, (None, 0))
 
             stop = max(stop, supporting_brick[1])
@@ -75,15 +77,15 @@ def solution(data: list[list[str]], part: int):
                 graph.add_edge(br[0], uid)
 
         fall = brick.start.z - (stop + 1)
-        brick.start.z -= fall
-        brick.end.z -= fall
+        brick.move(z=-fall)
 
         for coord in tuple(brick):
-            area, height = coord.extract_axis()
+            area, height = coord.extract_height()
             highest_points[area] = uid, height
 
     irremovable = set()
 
+    # Find bricks that have only one supporting brick
     for vertex in graph.nodes:
         predecessors = tuple(graph.predecessors(vertex))
         if len(predecessors) == 1:
@@ -92,26 +94,32 @@ def solution(data: list[list[str]], part: int):
     if part == 1:
         return len(bricks) - len(irremovable)
 
-    fall_sum = 0
+    # Remove bricks that trigger other bricks to fall
+    return sum(remove_brick(graph, src_vertex) for src_vertex in irremovable)
 
-    for src_vertex in irremovable:
-        removed = {src_vertex}
-        falling_bricks = deque(list(graph.successors(src_vertex)))
 
-        while falling_bricks:
-            vertex = falling_bricks.popleft()
-            predecessors = list(graph.predecessors(vertex))
+def remove_brick(graph: nx.DiGraph, src_vertex) -> int:
+    """
+    Remove a brick and find out how many bricks will fall as a result.
+    :param graph: The directed graph of bricks where A -> B means A supports B
+    :param src_vertex: The initial brick to remove
+    :return: The number of bricks that will fall as a result of removing the initial brick
+    """
+    removed = {src_vertex}
+    falling_bricks = deque(graph.successors(src_vertex))
 
-            if all(pred in removed for pred in predecessors):
-                removed.add(vertex)
-                falling_bricks.extend(graph.successors(vertex))
+    while falling_bricks:
+        vertex = falling_bricks.popleft()
+        predecessors = list(graph.predecessors(vertex))
 
-        # Source vertex must not be counted
-        fall_sum += len(removed) - 1
+        if all(pred in removed for pred in predecessors):
+            removed.add(vertex)
+            falling_bricks.extend(graph.successors(vertex))
 
-    return fall_sum
+    # Source vertex must not be counted
+    return len(removed) - 1
 
 
 if __name__ == '__main__':
-    print(solution(1))  # 463
-    print(solution(2))  # 89727
+    print(solution(1))  # 463     | 0.022
+    print(solution(2))  # 89727   | 2.15
