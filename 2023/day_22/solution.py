@@ -38,64 +38,32 @@ class Brick:
         return f"{self.__class__.__name__}(start={self.start}, end={self.end})"
 
 
-def __str_to_coord(string):
+def str_to_coord(string: str) -> Coordinate3D:
+    """Turn a string of 'x,y,z' to a corresponding Coordinate3D object."""
     return Coordinate3D(list(map(int, string.split(','))))
 
 
-@read_data('data.txt', sep2='~', auto_annotate=True)
-@stopwatch
-def solution(data: list[list[str]], part: int):
+def initialize_bricks(data: list[list[str]]) -> list[Brick]:
+    """Initialize bricks from data."""
     bricks = []
 
     for start, end in data:
-        brick = Brick(__str_to_coord(start), __str_to_coord(end))
+        brick = Brick(str_to_coord(start), str_to_coord(end))
         bricks.append(brick)
 
-    graph = nx.DiGraph()
+    return bricks
 
-    # Sort by height, assuming start z is always lower than end z
-    bricks.sort(key=lambda b: b.start.z)
 
-    highest_points = {}
-
-    # Add brick's id to graph and dictionary, not brick itself, because brick's height
-    # will be modified and bricks will be duplicated as a result
-    for uid, brick in enumerate(bricks):
-        stop = 0
-
-        bricks_below = set()
-
-        for coord in tuple(brick):
-            area, _ = coord.extract_height()
-            supporting_brick = highest_points.get(area, (None, 0))
-
-            stop = max(stop, supporting_brick[1])
-            bricks_below.add(supporting_brick)
-
-        for br in bricks_below:
-            if br[0] is not None and br[1] == stop:
-                graph.add_edge(br[0], uid)
-
-        fall = brick.start.z - (stop + 1)
-        brick.move(z=-fall)
-
-        for coord in tuple(brick):
-            area, height = coord.extract_height()
-            highest_points[area] = uid, height
-
+def find_irremovable_bricks(graph: nx.DiGraph) -> set[int]:
+    """Find bricks, that are the only supports for at least one other brick."""
     irremovable = set()
 
-    # Find bricks that have only one supporting brick
     for vertex in graph.nodes:
         predecessors = tuple(graph.predecessors(vertex))
         if len(predecessors) == 1:
             irremovable.add(predecessors[0])
 
-    if part == 1:
-        return len(bricks) - len(irremovable)
-
-    # Remove bricks that trigger other bricks to fall
-    return sum(remove_brick(graph, src_vertex) for src_vertex in irremovable)
+    return irremovable
 
 
 def remove_brick(graph: nx.DiGraph, src_vertex) -> int:
@@ -118,6 +86,53 @@ def remove_brick(graph: nx.DiGraph, src_vertex) -> int:
 
     # Source vertex must not be counted
     return len(removed) - 1
+
+
+@read_data('data.txt', sep2='~', auto_annotate=True)
+@stopwatch
+def solution(data: list[list[str]], part: int):
+    bricks = initialize_bricks(data)
+    graph = nx.DiGraph()
+    highest_points = {}
+
+    # Sort by height, assuming start z is always lower than end z
+    bricks.sort(key=lambda b: b.start.z)
+
+    # Add brick's id to graph and dictionary, not brick itself, because brick's height
+    # will be modified and bricks will be duplicated as a result
+    for uid, brick in enumerate(bricks):
+        stop = 0
+        bricks_below = set()
+
+        for coord in tuple(brick):
+            area, _ = coord.extract_height()
+            br_below = highest_points.get(area, (None, 0))
+            stop = max(stop, br_below[1])
+
+            # br_below is below the brick in question, but it is not yet known if it's a supporting brick, because
+            # the stop height is not yet known
+            bricks_below.add(br_below)
+
+        # Stop height is known, so now it's possible to determine which bricks are supporting the brick in question
+        for br in bricks_below:
+            if br[0] is not None and br[1] == stop:
+                graph.add_edge(br[0], uid)
+
+        fall = brick.start.z - (stop + 1)
+        brick.move(z=-fall)
+
+        # Update the highest points
+        for coord in tuple(brick):
+            area, height = coord.extract_height()
+            highest_points[area] = uid, height
+
+    irremovable = find_irremovable_bricks(graph)
+
+    if part == 1:
+        return len(bricks) - len(irremovable)
+
+    # Remove bricks that trigger other bricks to fall
+    return sum(remove_brick(graph, src_vertex) for src_vertex in irremovable)
 
 
 if __name__ == '__main__':
