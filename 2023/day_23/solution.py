@@ -1,3 +1,5 @@
+import sys
+
 from utils_anviks import read_data, stopwatch
 from collections import deque
 
@@ -19,41 +21,31 @@ def solution(data: list[str], part: int):
                 start = coord
             elif i == len(data) - 1 and tile == '.':
                 end = coord
-
-    direction_to_tile = {1: 'v', -1: '^', 1j: '>', -1j: '<'}
-    paths = deque([(start, 0, set())])
-    path_steps = []
-
-    while paths:
-        loc_steps, steps, visited = paths.popleft()
-
-        if loc_steps == end:
-            path_steps.append(steps)
-            continue
-
-        to_be_added = []
-
-        for direction in 1, -1, 1j, -1j:
-            next_loc = loc_steps + direction
-            next_tile = map_.get(next_loc, '#')
-            if next_loc not in visited and (next_tile == '.' or direction_to_tile[direction] == next_tile):
-                to_be_added.append((next_loc, steps + 1))
-
-        for i in range(len(to_be_added)):
-            loc, steps = to_be_added[i]
-
-            if i == len(to_be_added) - 1:
-                visited.add(loc)
-                paths.append((loc, steps, visited))
-            else:
-                copy = visited.copy()
-                copy.add(loc)
-                paths.append((loc, steps, copy))
+    dfs(start, set(), map_, end)
+    return best
 
 
-    return max(path_steps)
+direction_to_tile = {1: 'v', -1: '^', 1j: '>', -1j: '<'}
+
+
+best = 0
+
+def dfs(location: complex, visited: set, map_, end):
+    global best
+    if location == end:
+        best = max(best, len(visited))
+
+    for direction in 1, -1, 1j, -1j:
+        next_loc = location + direction
+        next_tile = map_.get(next_loc, '#')
+        if next_loc not in visited and (next_tile != '#'):
+            visited.add(next_loc)
+            dfs(next_loc, visited, map_, end)
+            visited.remove(next_loc)
+
 
 
 if __name__ == '__main__':
+    sys.setrecursionlimit(100000)
     print(solution(1))  # 2030  |  3.5s  |  0.38s
     print(solution(2))
