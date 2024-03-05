@@ -1,8 +1,8 @@
-from utils_anviks import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
-@read_data('data.txt', auto_annotate=True)
 @stopwatch
+@read_file('example.txt', auto_annotate=True)
 def solution(data: list[str], part: int):
     return data
 
