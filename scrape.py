@@ -4,15 +4,11 @@ import re
 import requests
 from bs4 import BeautifulSoup
 from html2text import html2text
-from utils_anviks import b64coder
-
-# confirmation = input("Are you sure you wish to scrape adventofcode.com? ")
-# if confirmation.lower() not in ("yes", "y"):
-#     exit()
+from utils_anviks import b64decode
 
 login_url = "https://github.com/session"
 session = requests.Session()
-session.headers["User-Agent"] = "Private non-automated script by andreasviks1@gmail.com"
+session.headers["User-Agent"] = "Private non-automated script by andreasviks0@gmail.com"
 req = session.get(login_url).text
 html = BeautifulSoup(req, features="lxml")
 token = html.find("input", {"name": "authenticity_token"}).attrs['value']
@@ -22,7 +18,7 @@ with open("login.json") as f:
 
 payload = {
     "login": creds.get("email"),
-    "password": b64coder.decode(creds.get("password")),
+    "password": b64decode(creds.get("password"), 20),
     "authenticity_token": token
 }
 
@@ -33,17 +29,14 @@ print(response.status_code)
 # AOC auth page.
 session.get("https://adventofcode.com/auth/github")
 
-with open("resultz.html", "w") as f:
-    f.write(session.get(f"https://adventofcode.com/").text)
-
 for year in range(2023, 2024):
-    for day in range(24, 25):
-        _dir = f"{year}/day_{day}/"
+    for day in range(16, 24):
+        dir_ = f"{year}/day_{day}/"
 
         personal_data = session.get(f"https://adventofcode.com/{year}/day/{day}/input")
         task_description = session.get(f"https://adventofcode.com/{year}/day/{day}")
 
-        with open(_dir + "data.txt", "w") as f:
+        with open(dir_ + "data.txt", "w") as f:
             f.write(personal_data.text.removesuffix("\n"))
 
         pretty_description = html2text(task_description.text)
@@ -63,7 +56,7 @@ for year in range(2023, 2024):
                                     fr"\1https://adventofcode.com/{year}/day/\2",
                                     pretty_description)
 
-        with open(_dir + "task_description.md", "w", encoding='utf-8') as f:
+        with open(dir_ + "task_description.md", "w", encoding='utf-8') as f:
             f.write(pretty_description)
 
 session.close()
