@@ -1,11 +1,11 @@
 import re
 from collections import defaultdict
 
-from utils_anviks.decorators import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
-@read_data(sep2="|")
 @stopwatch
+@read_file('data.txt', sep2="|")
 def solution(data: list[list[str]], part: int):
     # Points in part 1
     total = 0

@@ -3,7 +3,7 @@ from __future__ import annotations
 import math
 from collections import deque
 
-from utils_anviks import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
 class Module:
@@ -47,7 +47,7 @@ class Conjunction(Module):
         return f"{self.__class__.__name__}(name={self.name}, destinations={self.destinations}, inputs={self.inputs})"
 
 
-@read_data('data.txt', sep2=' -> ', auto_annotate=True)
+@read_file('data.txt', sep2=' -> ', auto_annotate=True)
 @stopwatch
 def solution(data: list[list[str]], part: int):
     modules = parse_modules(data)

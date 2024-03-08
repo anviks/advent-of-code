@@ -1,10 +1,10 @@
 import re
 
-from utils_anviks.decorators import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
-@read_data
 @stopwatch
+@read_file('data.txt')
 def solution(data: list[str], part: int):
     total = 0
     num_map = {"one": "1", "two": "2", "three": "3", "four": "4", "five": "5",
@@ -29,7 +29,7 @@ def solution(data: list[str], part: int):
     return total
 
 
-@read_data
+@read_file('data.txt')
 @stopwatch
 def solution_horrible(data: list[str], part: int):
     if part == 1:

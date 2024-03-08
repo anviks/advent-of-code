@@ -1,11 +1,11 @@
 from typing import TypeVar
 
-from utils_anviks import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 _T = TypeVar("_T")
 
 
-@read_data('data.txt', sep2='')
+@read_file('data.txt', sep2='')
 @stopwatch
 def solution(data: list[list[str]], part: int):
     """

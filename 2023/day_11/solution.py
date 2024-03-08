@@ -1,9 +1,9 @@
 from itertools import combinations, accumulate
 
-from utils_anviks.decorators import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
-@read_data(sep2="")
+@read_file(sep2="")
 @stopwatch
 def solution(data: list[list[str]], part: int):
     expansion_multiplier = 2 if part == 1 else 1_000_000

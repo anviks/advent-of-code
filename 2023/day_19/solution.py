@@ -2,7 +2,7 @@ import math
 import re
 from typing import Callable
 
-from utils_anviks import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
 class Predicate:
@@ -21,7 +21,7 @@ class Predicate:
         return f"Predicate({self.arg_operand}, {self.operation}, {self.fixed_operand})"
 
 
-@read_data('data.txt', sep='\n\n', sep2='\n', auto_annotate=True)
+@read_file('data.txt', sep='\n\n', sep2='\n', auto_annotate=True)
 @stopwatch
 def solution(data: list[list[str]], part: int):
     flows = data[0]

@@ -1,6 +1,6 @@
 from collections import deque
 
-from utils_anviks import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
 def parse_garden(matrix: list[list[str]]):
@@ -20,7 +20,7 @@ def parse_garden(matrix: list[list[str]]):
     return garden, start
 
 
-@read_data('data.txt', sep2='', auto_annotate=True)
+@read_file('data.txt', sep2='', auto_annotate=True)
 @stopwatch
 def solution(data: list[list[str]], part: int):
     garden, start = parse_garden(data)

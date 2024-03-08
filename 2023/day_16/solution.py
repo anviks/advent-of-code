@@ -1,9 +1,9 @@
 from collections import defaultdict
 
-from utils_anviks.decorators import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
-@read_data('data.txt', sep2='')
+@read_file('data.txt', sep2='')
 @stopwatch
 def solution(data: list[list[str]], part: int):
     max_tiles = 0
@@ -63,4 +63,4 @@ def walk(tile_matrix: dict[complex, str], direction: complex, ij: complex = 0, t
 
 if __name__ == '__main__':
     print(solution(1))  # 7242  0.014s
-    print(solution(2))  # 7572  2.8s
+    print(solution(2))  # 7572  3.2s

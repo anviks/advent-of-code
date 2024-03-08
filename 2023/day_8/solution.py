@@ -2,10 +2,10 @@ import math
 import re
 import time
 
-from utils_anviks.decorators import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
-@read_data
+@read_file('data.txt')
 @stopwatch
 def solution(data: list[str], part: int):
     # 0 - left, 1 - right

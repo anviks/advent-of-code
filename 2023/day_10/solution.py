@@ -1,6 +1,6 @@
 from enum import Enum
 
-from utils_anviks.decorators import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
 class Direction(Enum):
@@ -49,7 +49,7 @@ def make_move(pipe: str, previous_move: Direction, i: int, j: int) -> tuple[int,
     return new_direction.apply(i, j) + (new_direction,)
 
 
-@read_data(sep2="")
+@read_file(sep2="")
 @stopwatch
 def solution(data: list[list[str]], part: int):
     coords = set()

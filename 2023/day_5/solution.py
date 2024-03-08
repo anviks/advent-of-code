@@ -1,6 +1,6 @@
 import sys
 
-from utils_anviks.decorators import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
 def apply_mappings(seeds: list[int], mappings: list[list[tuple[int, int, int]]]) -> list[int]:
@@ -28,7 +28,7 @@ def parse_mappings(data: list[str]) -> list[list[tuple[int, int, int]]]:
     return mappings
 
 
-@read_data()
+@read_file('data.txt')
 @stopwatch
 def solution(data: list[str], part: int) -> int:
     return solve_part_one(data) if part == 1 else solve_part_two(data)

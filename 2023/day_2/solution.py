@@ -1,10 +1,10 @@
 import re
 
-from utils_anviks.decorators import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
-@read_data
 @stopwatch
+@read_file('data.txt')
 def solution(data: list[str], part: int):
     # Part 1: Sum of game IDs, where limits are not exceeded
     # Part 2: Sum of products of minimum possible amount of cubes

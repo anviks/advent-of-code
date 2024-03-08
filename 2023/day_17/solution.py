@@ -1,9 +1,9 @@
 from heapq import heappop as pop, heappush as push
 
-from utils_anviks.decorators import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
-@read_data('data.txt', sep2='', _class=int, auto_annotate=True)
+@read_file('data.txt', sep2='', _class=int, auto_annotate=True)
 @stopwatch
 def solution(data: list[list[int]], part: int):
     mapping = {i + j * 1j: data[i][j]

@@ -1,7 +1,7 @@
 from collections import defaultdict
 from functools import reduce
 
-from utils_anviks.decorators import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
 def hash_it(string: str) -> int:
@@ -15,7 +15,7 @@ def hash_it(string: str) -> int:
     return reduce(lambda acc, char: (acc + ord(char)) * 17, string, 0) % 256
 
 
-@read_data("data.txt", sep=",")
+@read_file("data.txt", sep=",")
 @stopwatch
 def solution(data: list[str], part: int):
     if part == 1:

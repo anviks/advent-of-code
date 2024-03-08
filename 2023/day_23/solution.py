@@ -1,11 +1,11 @@
 import sys
 
-from utils_anviks import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 DIRECTION_TO_TILE = {1: 'v', -1: '^', 1j: '>', -1j: '<'}
 
 
-@read_data('data.txt', auto_annotate=True)
+@read_file('data.txt', auto_annotate=True)
 @stopwatch
 def solution(data: list[str], part: int):
     grid = {}

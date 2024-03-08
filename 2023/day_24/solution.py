@@ -1,12 +1,12 @@
 from itertools import combinations
 
-from utils_anviks import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 MIN_POS = 200_000_000_000_000
 MAX_POS = 400_000_000_000_000
 
 
-@read_data('data.txt', sep2=' @ ', sep3=', ', _class=int, auto_annotate=True)
+@read_file('data.txt', sep2=' @ ', sep3=', ', _class=int, auto_annotate=True)
 @stopwatch
 def solution(data: list[list[list[int]]], part: int):
     acc = 0

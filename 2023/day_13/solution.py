@@ -1,7 +1,7 @@
-from utils_anviks.decorators import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
-@read_data("data.txt", sep="\n\n", sep2="\n")
+@read_file("data.txt", sep="\n\n", sep2="\n")
 @stopwatch
 def solution(data: list[list[str]], part: int):
     is_part_one = part == 1

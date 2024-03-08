@@ -2,10 +2,10 @@ import re
 from functools import cache
 from itertools import product
 
-from utils_anviks.decorators import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
-@read_data("sample.txt", sep2=" ")
+@read_file("sample.txt", sep2=" ")
 @stopwatch
 def solution(data: list[list[str]], part: int):
     for i, row in enumerate(data):

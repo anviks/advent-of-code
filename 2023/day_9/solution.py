@@ -1,7 +1,7 @@
-from utils_anviks.decorators import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
-@read_data(sep2=" ", _class=int)
+@read_file(sep2=" ", _class=int)
 @stopwatch
 def solution(data: list[list[int]]):
     next_values = []

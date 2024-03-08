@@ -1,7 +1,7 @@
 import math
 import re
 
-from utils_anviks.decorators import stopwatch
+from utils_anviks import stopwatch
 
 
 @stopwatch
@@ -14,7 +14,7 @@ def solution(data: list[list[int]] | list[int], part: int):
         for time, distance in zip(record_times, distances):
             possibilities = 0
             for t in range(time):
-                possibilities += t * (time - t) > distances[i]
+                possibilities += t * (time - t) > distance
 
             total *= possibilities
     else:

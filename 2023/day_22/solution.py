@@ -1,7 +1,7 @@
 from collections import deque
 
 import networkx as nx
-from utils_anviks import read_data, stopwatch, Coordinate3D
+from utils_anviks import read_file, stopwatch, Coordinate3D
 
 
 class Brick:
@@ -88,7 +88,7 @@ def remove_brick(graph: nx.DiGraph, src_vertex) -> int:
     return len(removed) - 1
 
 
-@read_data('data.txt', sep2='~', auto_annotate=True)
+@read_file('data.txt', sep2='~', auto_annotate=True)
 @stopwatch
 def solution(data: list[list[str]], part: int):
     bricks = initialize_bricks(data)

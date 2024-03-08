@@ -1,8 +1,8 @@
 import networkx as nx
-from utils_anviks import read_data, stopwatch
+from utils_anviks import read_file, stopwatch
 
 
-@read_data("data.txt", sep2=': ')
+@read_file("data.txt", sep2=': ')
 @stopwatch
 def solution(data: list[str]):
     graph = nx.Graph()
@@ -18,3 +18,4 @@ def solution(data: list[str]):
 
 if __name__ == '__main__':
     print(solution())  # 533628
+    print(2 < 5)
