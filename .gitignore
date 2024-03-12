@@ -1,7 +1,7 @@
 login.json
 .idea
 
-# Ignore input files and task descriptions as per Eric's request (https://adventofcode.com/2023/about#faq_copying)
-/*/*/*.txt
-/*/*/*.md
-
+# Ignore input files and task descriptions as per Eric's request (https://adventofcode.com/about#faq_copying)
+# and all files other than solution.py
+/*/*/*
+!/*/*/solution.py

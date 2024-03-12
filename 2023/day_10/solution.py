@@ -105,20 +105,3 @@ def solution(data: list[list[str]], part: int):
 if __name__ == '__main__':
     print(solution(1))  # 6931
     print(solution(2))  # 357
-
-
-
-    # from matplotlib.path import Path
-    #
-    # ans_2 = 0
-    #
-    # p = Path(list(coords))
-    # print()
-    # for i in range(len(data)):
-    #     for j in range(len(data[0])):
-    #         if (i, j) in coords:
-    #             continue
-    #         if p.contains_point((i, j)):
-    #             ans_2 += 1
-    #
-    # print(ans_2)
