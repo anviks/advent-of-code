@@ -1,7 +1,5 @@
 import itertools
-import cProfile
 
-from memory_profiler import profile
 from utils_anviks import parse_file_content, stopwatch
 
 
