@@ -23,20 +23,12 @@ class AdventOfCodeSolver:
     def part1(self) -> int:
         self.fold(1)
         chain = itertools.chain(*self.grid)
-        
         return sum(chain)
 
     @stopwatch
     def part2(self) -> str:
         self.fold()  # Finish folding
-
-        result = ''
-        for i, line in enumerate(self.grid):
-            for j, flag in enumerate(line):
-                result += '#' if flag else ' ' 
-            result += '\n'
-
-        return result
+        return self.grid_to_string()
     
     def fold(self, times: int | None = None):
         iteration = 0
@@ -61,7 +53,15 @@ class AdventOfCodeSolver:
                 break
         
         self.folds = self.folds[times:]
-
+        
+    def grid_to_string(self):
+        result = ''
+        for i, line in enumerate(self.grid):
+            for j, flag in enumerate(line):
+                result += '#' if flag else ' '
+            result += '\n'
+            
+        return result
 
 def main() -> None:
     solver = AdventOfCodeSolver('data.txt')
