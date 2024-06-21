@@ -21,51 +21,51 @@ class AdventOfCodeSolver:
     def part1(self) -> int:
         id_ = 0
         # risk sum, id, coord, visited
-        d = [(0, id_, 0j)]
+        nodes = [(0, id_, 0j)]
         target = max(self.grid, key=lambda c: (c.real, c.imag))
         distances = {0j: self.grid[0j]}
 
-        while d:
-            risk, _, coord = pop(d)
+        while nodes:
+            risk, _, coord = pop(nodes)
             
             if coord == target:
                 return risk
 
-            for n in self.get_neighbours(coord):
-                new_risk = self.grid[n]
-                if n not in distances or new_risk < distances[n]:
-                    distances[n] = new_risk
+            for neighbour in self.get_neighbours(coord):
+                new_risk = self.grid[neighbour]
+                if neighbour not in distances or new_risk < distances[neighbour]:
+                    distances[neighbour] = new_risk
                     id_ += 1
-                    push(d, (risk + new_risk, id_, n))
+                    push(nodes, (risk + new_risk, id_, neighbour))
 
 
     @stopwatch
     def part2(self) -> int:
         id_ = 0
         # risk sum, id, coord, visited
-        d = [(0, id_, 0j)]
+        nodes = [(0, id_, 0j)]
         target = max(self.grid, key=lambda c: (c.real, c.imag))
         height, width = int(target.real) + 1, int(target.imag) + 1
         target = complex(height * 5 - 1, width * 5 - 1)
         distances = {0j: self.grid[0j]}
 
-        while d:
-            risk, _, coord = pop(d)
+        while nodes:
+            risk, _, coord = pop(nodes)
             if coord == target:
                 return int(risk)
 
-            for n in [coord + 1, coord - 1, coord + 1j, coord - 1j]:
-                if 0 > n.real >= target.real or 0 > n.imag >= target.imag:
+            for neighbour in [coord + 1, coord - 1, coord + 1j, coord - 1j]:
+                if 0 > neighbour.real >= target.real or 0 > neighbour.imag >= target.imag:
                     continue
                 
-                shift = n.real // height + n.imag // width
-                bound_n = complex(n.real % height, n.imag % width)
-                new_risk = (self.grid[bound_n] + shift) % 9 or 9
+                shift = neighbour.real // height + neighbour.imag // width
+                bound_neighbour = complex(neighbour.real % height, neighbour.imag % width)
+                new_risk = (self.grid[bound_neighbour] + shift) % 9 or 9
                 
-                if n not in distances or new_risk < distances[n]:
-                    distances[n] = new_risk
+                if neighbour not in distances or new_risk < distances[neighbour]:
+                    distances[neighbour] = new_risk
                     id_ += 1
-                    push(d, (risk + new_risk, id_, n))
+                    push(nodes, (risk + new_risk, id_, neighbour))
 
 
 def main() -> None:
