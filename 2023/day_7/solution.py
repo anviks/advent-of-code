@@ -1,7 +1,7 @@
 from collections import Counter
 from dataclasses import dataclass
 
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 
 @dataclass
@@ -11,9 +11,9 @@ class CardHand:
     strength: int = -1
 
 
-@read_file('data.txt', sep2=" ")
 @stopwatch
-def solution(data: list[list[str]], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n', ' '), str)
     winnings = 0
 
     hands: list[CardHand] = [CardHand(cards, int(bid)) for cards, bid in data]

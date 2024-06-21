@@ -1,4 +1,4 @@
-from utils_anviks import read_file
+from utils_anviks import parse_file_content
 from collections import Counter
 
 
@@ -32,23 +32,21 @@ class Vent:
         return coords
 
 
-@read_file('data.txt')
-def solution(data: list, part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n', ' -> ', ','), int)
     vents = []
     covered_coords = []
 
     for vent in data:
-        start, end = vent.split(" -> ")
-        start_x, start_y = start.split(",")
-        end_x, end_y = end.split(",")
+        (start_x, start_y), (end_x, end_y) = vent
 
         if part == 1 and start_x != end_x and start_y != end_y:
             continue
 
         vents.append(
             Vent(
-                (int(start_x), int(start_y)),
-                (int(end_x), int(end_y))
+                (start_x, start_y),
+                (end_x, end_y)
             ))
 
     for vent in vents:
@@ -59,9 +57,14 @@ def solution(data: list, part: int):
     return len([coord for coord in counts if counts[coord] > 1])
 
 
-if __name__ == '__main__':
-    print(solution(1))
-    print(solution(2))
+def main():
+    print(solution(1))  # 7473
+    print(solution(2))  # 24164
 
     vent = Vent((3, 3), (5, 1))
     print(vent.get_covered_coords())
+
+
+if __name__ == '__main__':
+    main()
+

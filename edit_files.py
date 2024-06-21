@@ -2,10 +2,10 @@
 
 import os
 
-overwrite_solution = False
+overwrite_solution = True
 
 for year in range(2021, 2022):
-    for day in range(10, 25):
+    for day in range(14, 26):
         day_folder = f"{year}/day_{day}"
         data_file = day_folder + "/data.txt"
         example_file = day_folder + "/example.txt"

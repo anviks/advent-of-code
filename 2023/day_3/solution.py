@@ -1,4 +1,4 @@
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 
 def find_start(matrix: list[list[str]], i: int, j: int) -> tuple[int, int]:
@@ -28,8 +28,8 @@ def get_surrounding_number_coords(matrix: list[list[str]], i: int, j: int) -> se
 
 
 @stopwatch
-@read_file('data.txt', sep2="")
-def solution(data: list[list[str]], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n', ''), str)
     total = 0
 
     for i in range(len(data)):

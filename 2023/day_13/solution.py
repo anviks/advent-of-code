@@ -1,9 +1,10 @@
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 
-@read_file("data.txt", sep="\n\n", sep2="\n")
 @stopwatch
-def solution(data: list[list[str]], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n\n', '\n'), str)
+    
     is_part_one = part == 1
     acc = 0
 

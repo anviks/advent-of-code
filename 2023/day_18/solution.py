@@ -1,4 +1,4 @@
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 
 def part_one_visualisation(data: list[list[str]]):
@@ -65,9 +65,9 @@ def shoelace_formula(vertices):
     return area
 
 
-@read_file(filename='data.txt', sep2=' ', auto_annotate=True)
 @stopwatch
-def solution(data: list[list[str]], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n', ' '), str)
     sections = []
     current_position = 0
 

@@ -1,9 +1,9 @@
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 
-@read_file(sep2=" ", _class=int)
 @stopwatch
-def solution(data: list[list[int]]):
+def solution():
+    data = parse_file_content('data.txt', ('\n', ' '), int)
     next_values = []
     prev_values = []
 

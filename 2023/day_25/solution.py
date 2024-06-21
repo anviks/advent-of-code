@@ -1,10 +1,10 @@
 import networkx as nx
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 
-@read_file("data.txt", sep2=': ')
 @stopwatch
-def solution(data: list[str]):
+def solution():
+    data = parse_file_content('data.txt', ('\n', ': '), str)
     graph = nx.Graph()
 
     for source, destinations in data:

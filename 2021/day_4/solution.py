@@ -1,14 +1,14 @@
 """AOC day 4."""
+from utils_anviks import parse_file_content, parse_string
 
 
-def solution(filename: str, part: int):
+def solution(part: int):
     """AOC day 4 solution."""
-    with open(filename, encoding="utf-8") as file:
-        content = file.read().split("\n\n")
-
-    nums = list(map(int, content[0].split(",")))
+    content: list[str] = parse_file_content('data.txt', ('\n\n',), str)
+    nums = parse_string(content[0], (',',), int)
     content.pop(0)
-    boards = [content[i].split("\n") for i in range(len(content))]
+    row: str
+    boards = [row.split('\n') for row in content]
     boards_int = []
 
     for board in boards:
@@ -47,7 +47,6 @@ def solution(filename: str, part: int):
                               + board[2].count(-1) + board[3].count(-1) + board[4].count(-1))
 
 
-
 if __name__ == '__main__':
-    print(solution("data.txt", 1))
-    print(solution("data.txt", 2))
+    print(solution(1))  # 23177
+    print(solution(2))  # 6804

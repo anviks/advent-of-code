@@ -1,11 +1,10 @@
 import math
-import re
 
 from utils_anviks import stopwatch
 
 
 @stopwatch
-def solution(data: list[list[int]] | list[int], part: int):
+def solution(data, part: int):
     record_times, distances = data
 
     if part == 1:

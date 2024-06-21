@@ -1,11 +1,11 @@
 from itertools import combinations, accumulate
 
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 
-@read_file(sep2="")
 @stopwatch
-def solution(data: list[list[str]], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n', ''), str)
     expansion_multiplier = 2 if part == 1 else 1_000_000
     length_sum = 0
 

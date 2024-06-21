@@ -1,7 +1,7 @@
 from collections import defaultdict
 from functools import reduce
 
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 
 def hash_it(string: str) -> int:
@@ -15,9 +15,10 @@ def hash_it(string: str) -> int:
     return reduce(lambda acc, char: (acc + ord(char)) * 17, string, 0) % 256
 
 
-@read_file("data.txt", sep=",")
 @stopwatch
-def solution(data: list[str], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', (',',), str)
+    
     if part == 1:
         return sum(map(hash_it, data))
 

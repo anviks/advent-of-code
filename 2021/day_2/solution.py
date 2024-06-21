@@ -1,44 +1,38 @@
 """AOC day 2."""
+from utils_anviks import parse_file_content
 
 
-def solution(filename: str, part: int):
+def solution(part: int):
     """AOC day 2 solution."""
-    with open(filename, encoding="utf-8") as file:
-        content = file.read().split("\n")
+    content = parse_file_content('data.txt', ('\n', ' '), str)
 
-    if part == 1:
-        horizontal = 0
-        depth = 0
+    horizontal = 0
+    depth = 0
+    aim = 0
 
-        for row in content:
-            movement, amount = row.split(" ")
+    for row in content:
+        movement, amount = row
+        amount = int(amount)
 
+        if part == 1:
             if movement == "up":
-                depth -= int(amount)
+                depth -= amount
             elif movement == "down":
-                depth += int(amount)
+                depth += amount
             else:
-                horizontal += int(amount)
-
-    else:
-        horizontal = 0
-        depth = 0
-        aim = 0
-
-        for row in content:
-            movement, amount = row.split(" ")
-
+                horizontal += amount
+        else:
             if movement == "up":
-                aim -= int(amount)
+                aim -= amount
             elif movement == "down":
-                aim += int(amount)
+                aim += amount
             else:
-                horizontal += int(amount)
-                depth += aim * int(amount)
+                horizontal += amount
+                depth += aim * amount
 
     return horizontal * depth
 
 
 if __name__ == '__main__':
-    print(solution("data.txt", 1))
-    print(solution("data.txt", 2))
+    print(solution(1))  # 1728414
+    print(solution(2))  # 1765720035

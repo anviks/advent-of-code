@@ -1,11 +1,12 @@
 import re
 
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 
 @stopwatch
-@read_file('data.txt')
-def solution(data: list[str], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n',), str)
+    
     # Part 1: Sum of game IDs, where limits are not exceeded
     # Part 2: Sum of products of minimum possible amount of cubes
     total = 0

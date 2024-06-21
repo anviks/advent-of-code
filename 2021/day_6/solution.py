@@ -1,10 +1,10 @@
 import time
 
-from utils_anviks import read_file
+from utils_anviks import parse_file_content, stopwatch
 
 
-@read_file(sep=",", _class=int)
-def solution(data: list, part: int):
+@stopwatch
+def solution(part: int):
     """
     Python list can store 536,870,912 elements on a 32-bit system.
 
@@ -15,8 +15,7 @@ def solution(data: list, part: int):
     My answer for part two was ?.
     """
     fish = {k: 0 for k in range(9)}
-
-    data = list(map(int, data))
+    data = parse_file_content('data.txt', (',',), int)
 
     for f in data:
         fish[f] += 1
@@ -34,9 +33,7 @@ def solution(data: list, part: int):
 
 
 if __name__ == '__main__':
-    start = time.perf_counter()
     print(solution(1))
-    print(time.perf_counter() - start)
     print(solution(2))
 
     # for i in range(days):

@@ -1,11 +1,11 @@
 import re
 
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 
 @stopwatch
-@read_file('data.txt')
-def solution(data: list[str], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n',), str)
     total = 0
     num_map = {"one": "1", "two": "2", "three": "3", "four": "4", "five": "5",
                "six": "6", "seven": "7", "eight": "8", "nine": "9"}
@@ -29,9 +29,9 @@ def solution(data: list[str], part: int):
     return total
 
 
-@read_file('data.txt')
 @stopwatch
-def solution_horrible(data: list[str], part: int):
+def solution_horrible(part: int):
+    data = parse_file_content('data.txt', ('\n',), str)
     if part == 1:
         pass
     else:

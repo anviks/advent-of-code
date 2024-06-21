@@ -5,7 +5,7 @@ class AdventOfCodeSolver:
     BRACKET_PAIRS = {'(': ')', '[': ']', '{': '}', '<': '>'}
     
     def __init__(self, input_file_name: str):
-        self.data = parse_file_content(input_file_name, sep2='')
+        self.data = parse_file_content(input_file_name, ('\n', ''), str)
     
     @stopwatch    
     def part1(self) -> int:

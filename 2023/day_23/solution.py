@@ -1,13 +1,13 @@
 import sys
 
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 DIRECTION_TO_TILE = {1: 'v', -1: '^', 1j: '>', -1j: '<'}
 
 
-@read_file('data.txt', auto_annotate=True)
 @stopwatch
-def solution(data: list[str], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n',), str)
     grid = {}
     visited = set()
     start = None

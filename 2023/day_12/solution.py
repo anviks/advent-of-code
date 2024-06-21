@@ -2,12 +2,12 @@ import re
 from functools import cache
 from itertools import product
 
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 
-@read_file("sample.txt", sep2=" ")
 @stopwatch
-def solution(data: list[list[str]], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n', ' '), str)
     for i, row in enumerate(data):
         data[i][1] = tuple(map(int, row[1].split(',')))
         if part == 2:

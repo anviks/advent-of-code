@@ -1,14 +1,14 @@
 from itertools import combinations
 
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 MIN_POS = 200_000_000_000_000
 MAX_POS = 400_000_000_000_000
 
 
-@read_file('data.txt', sep2=' @ ', sep3=', ', _class=int, auto_annotate=True)
 @stopwatch
-def solution(data: list[list[list[int]]], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n', ' @ ', ', '), int)
     acc = 0
     hailstones = []
 

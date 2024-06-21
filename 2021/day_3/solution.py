@@ -1,10 +1,10 @@
 """AOC day 3."""
+from utils_anviks import parse_file_content
 
 
-def solution(filename: str, part: int):
+def solution(part: int):
     """AOC day 3 solution."""
-    with open(filename, encoding="utf-8") as file:
-        content = file.read().split("\n")
+    content = parse_file_content('data.txt', ('\n',), str)
 
     gamma_rate = ""
     epsilon_rate = ""
@@ -55,5 +55,5 @@ def solution(filename: str, part: int):
 
 
 if __name__ == '__main__':
-    print(solution("data.txt", 1))
-    print(solution("data.txt", 2))
+    print(solution(1))
+    print(solution(2))

@@ -1,11 +1,11 @@
 from heapq import heappop as pop, heappush as push
 
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 
-@read_file('data.txt', sep2='', _class=int, auto_annotate=True)
 @stopwatch
-def solution(data: list[list[int]], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n', ''), int)
     mapping = {i + j * 1j: data[i][j]
                for i in range(len(data))
                for j in range(len(data[0]))}

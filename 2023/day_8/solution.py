@@ -1,13 +1,13 @@
 import math
 import re
-import time
 
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 
-@read_file('data.txt')
 @stopwatch
-def solution(data: list[str], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n',), str)
+    
     # 0 - left, 1 - right
     instructions = [0 if letter == 'L' else 1 for letter in data[0]]
     # {'AAA': ('BBB', 'CCC'), 'BBB': ('AAA', 'CCC'), ...}

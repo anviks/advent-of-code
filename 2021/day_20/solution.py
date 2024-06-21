@@ -3,7 +3,7 @@ from utils_anviks import parse_file_content, stopwatch
 
 class AdventOfCodeSolver:
     def __init__(self, input_file_name: str):
-        self.data = parse_file_content(input_file_name)
+        self.data = parse_file_content(input_file_name, ('\n',), str)
     
     @stopwatch    
     def part1(self) -> int:

@@ -6,7 +6,7 @@ from utils_anviks import parse_file_content, stopwatch
 class AdventOfCodeSolver:
     @stopwatch
     def __init__(self, input_file_name: str):
-        data = parse_file_content(input_file_name, sep='\n\n', sep2='\n')
+        data = parse_file_content(input_file_name, ('\n\n', '\n'), str)
         coords = set()
         for coord in data[0]:
             coords.add(tuple(map(int, coord.split(','))))

@@ -1,6 +1,6 @@
 import time
 
-from utils_anviks import read_file
+from utils_anviks import parse_file_content, stopwatch
 
 
 def __get_segments(display: list[str]):
@@ -55,14 +55,14 @@ def __get_segments(display: list[str]):
 
     return segments
 
-@read_file('data.txt')
-def solution(data: list, part: int):
-    outputs = [display.split(" | ")[1].split(" ") for display in data]
+
+@stopwatch
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n', ' | ', ' '), str)
+    displays, outputs = list(zip(*data))
 
     if part == 1:
         return sum(sum(1 for num in display if len(num) in (2, 3, 4, 7)) for display in outputs)
-
-    displays = [display.split(" | ")[0].split(" ") for display in data]
 
     answer = 0
 
@@ -80,12 +80,6 @@ def solution(data: list, part: int):
     return answer
 
 
-
 if __name__ == '__main__':
-    start = time.perf_counter()
-    print(solution(1))
-    print(time.perf_counter() - start)
-
-    start = time.perf_counter()
-    print(solution(2))
-    print(time.perf_counter() - start)
+    print(solution(1))  # 383
+    print(solution(2))  # 998900

@@ -1,12 +1,13 @@
 import re
 from collections import defaultdict
 
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 
 @stopwatch
-@read_file('data.txt', sep2="|")
-def solution(data: list[list[str]], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n', '|'), str)
+    
     # Points in part 1
     total = 0
     cards = defaultdict(lambda: 1)

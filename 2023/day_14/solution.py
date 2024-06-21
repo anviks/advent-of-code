@@ -1,22 +1,22 @@
 from typing import TypeVar
 
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 _T = TypeVar("_T")
 
 
-@read_file('data.txt', sep2='')
 @stopwatch
-def solution(data: list[list[str]], part: int):
+def solution(part: int):
     """
     Solution for the day 14 problem.
 
     For part 1, return the total load of the rocks after 1 tilt to the north.
     For part 2, return the total load of the rocks after 1_000_000_000 cycles of tilting (north, west, south, east).
-    :param data: The rocks from the input file.
     :param part: The part of the problem to solve.
     :return: The solution for the given part.
     """
+    data = parse_file_content('data.txt', ('\n', ''), str)
+
     if part == 1:
         tilt_north(data)
 

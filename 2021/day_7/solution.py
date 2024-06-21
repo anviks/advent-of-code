@@ -1,10 +1,12 @@
 import time
 
-from utils_anviks import read_file
+from utils_anviks import parse_file_content, stopwatch
 
 
-@read_file(sep=",", _class=int)
-def solution(data: list, part: int):
+@stopwatch
+def solution(part: int):
+    data = parse_file_content('data.txt', (',',), int)
+    
     if part == 1:
         median = sorted(data)[len(data) // 2]
         return sum(abs(j - median) for j in data)
@@ -20,13 +22,8 @@ def solution(data: list, part: int):
 
 
 if __name__ == '__main__':
-    start = time.perf_counter()
     print(solution(1))
-    print(time.perf_counter() - start)
-
-    start = time.perf_counter()
     print(solution(2))
-    print(time.perf_counter() - start)
 
     #     fuel_consumptions = {}
     #

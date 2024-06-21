@@ -1,7 +1,7 @@
 from collections import deque
 
 import networkx as nx
-from utils_anviks import read_file, stopwatch, Coordinate3D
+from utils_anviks import parse_file_content, stopwatch, Coordinate3D
 
 
 class Brick:
@@ -88,9 +88,9 @@ def remove_brick(graph: nx.DiGraph, src_vertex) -> int:
     return len(removed) - 1
 
 
-@read_file('data.txt', sep2='~', auto_annotate=True)
 @stopwatch
-def solution(data: list[list[str]], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n', '~'), str)
     bricks = initialize_bricks(data)
     graph = nx.DiGraph()
     highest_points = {}

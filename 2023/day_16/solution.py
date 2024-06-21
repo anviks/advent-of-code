@@ -1,11 +1,11 @@
 from collections import defaultdict
 
-from utils_anviks import read_file, stopwatch
+from utils_anviks import parse_file_content, stopwatch
 
 
-@read_file('data.txt', sep2='')
 @stopwatch
-def solution(data: list[list[str]], part: int):
+def solution(part: int):
+    data = parse_file_content('data.txt', ('\n', ''), str)
     max_tiles = 0
 
     mapper: dict[complex, str] = {i + j * 1j: data[i][j]

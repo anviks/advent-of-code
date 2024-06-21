@@ -6,7 +6,7 @@ import networkx as nx
 
 class AdventOfCodeSolver:
     def __init__(self, input_file_name: str):
-        self.data = parse_file_content(input_file_name, sep2='-')
+        self.data = parse_file_content(input_file_name, ('\n', '-'), str)
         self.graph = nx.Graph()
         for row in self.data:
             self.graph.add_edge(*row)

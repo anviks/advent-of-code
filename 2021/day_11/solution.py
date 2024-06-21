@@ -3,7 +3,7 @@ from utils_anviks import parse_file_content, stopwatch
 
 class AdventOfCodeSolver:
     def __init__(self, input_file_name: str):
-        self.data = parse_file_content(input_file_name, sep2='', _class=int)
+        self.data = parse_file_content(input_file_name, ('\n', ''), int)
         self.grid = None
         
     def initialize_grid(self):
