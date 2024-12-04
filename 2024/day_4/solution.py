@@ -11,12 +11,11 @@ grid = {
 
 
 def find_xmas(coord: complex, direction: complex) -> bool:
-    chars = ['X', 'M', 'A']
+    chars = iter('AMX')
 
     for _ in range(3):
         coord += direction
-        value = grid.get(coord)
-        if value is None or value != chars.pop():
+        if grid.get(coord) != next(chars):
             return False
 
     return True
@@ -25,11 +24,11 @@ def find_xmas(coord: complex, direction: complex) -> bool:
 def find_mas(coord: complex) -> bool:
     diagonals = [-1 - 1j, -1 + 1j, 1 + 1j, 1 - 1j, -1 - 1j]
 
-    for a, b in zip(diagonals, diagonals[1:]):
-        if grid.get(coord + a) == grid.get(coord + b) == 'M' and grid.get(coord - a) == grid.get(coord - b) == 'S':
-            return True
-
-    return False
+    return any(
+        grid.get(coord + a) == grid.get(coord + b) == 'M' and
+        grid.get(coord - a) == grid.get(coord - b) == 'S'
+        for a, b in zip(diagonals, diagonals[1:])
+    )
 
 
 def part1():
@@ -47,13 +46,7 @@ def part1():
 
 
 def part2():
-    mas_count = 0
-
-    for coord, value in grid.items():
-        if value == 'A':
-            mas_count += find_mas(coord)
-
-    return mas_count
+    return sum(find_mas(coord) for coord, value in grid.items() if value == 'A')
 
 
 if __name__ == '__main__':
