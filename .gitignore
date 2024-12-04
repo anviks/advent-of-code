@@ -1,5 +1,5 @@
-login.json
 .idea
+.env
 
 # Ignore input files and task descriptions as per Eric's request (https://adventofcode.com/about#faq_copying)
 # and all files other than solution.py
