@@ -30,13 +30,11 @@ def find_invalid_order(update: list[int]) -> tuple[int, int] | None:
 
 
 def part1():
-    acc = 0
-
-    for update in updates:
-        if is_correct_order(update):
-            acc += update[len(update) // 2]
-
-    return acc
+    return sum(
+        update[len(update) // 2]
+        for update in updates
+        if is_correct_order(update)
+    )
 
 
 def part2():
