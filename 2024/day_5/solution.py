@@ -14,19 +14,21 @@ for rule in rules:
     rules_map[rule[0]].append(rule[1])
 
 
+def is_correct_order(update: list[int]):
+    for i, n in enumerate(update):
+        following_nums = rules_map[n]
+        for fnum in following_nums:
+            if fnum in update[:i]:
+                return False
+
+    return True
+
+
 def part1():
     acc = 0
 
     for update in updates:
-        for i, n in enumerate(update):
-            following_nums = rules_map[n]
-            for fnum in following_nums:
-                if fnum in update[:i]:
-                    break
-            else:
-                continue
-            break
-        else:
+        if is_correct_order(update):
             acc += update[len(update) // 2]
 
     return acc
