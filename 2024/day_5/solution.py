@@ -15,13 +15,18 @@ for rule in rules:
 
 
 def is_correct_order(update: list[int]):
-    for i, n in enumerate(update):
-        following_nums = rules_map[n]
-        for fnum in following_nums:
-            if fnum in update[:i]:
-                return False
-
+    for i, num in enumerate(update):
+        if any(fnum in update[:i] for fnum in rules_map[num]):
+            return False
     return True
+
+
+def find_invalid_order(update: list[int]) -> tuple[int, int] | None:
+    for i, num in enumerate(update):
+        for fnum in rules_map[num]:
+            if fnum in update[:i]:
+                return i, update[:i].index(fnum)
+    return None
 
 
 def part1():
@@ -35,7 +40,19 @@ def part1():
 
 
 def part2():
-    pass
+    acc = 0
+
+    for update in updates:
+        if is_correct_order(update):
+            continue
+
+        while res := find_invalid_order(update):
+            i, j = res
+            update[i], update[j] = update[j], update[i]
+
+        acc += update[len(update) // 2]
+
+    return acc
 
 
 if __name__ == '__main__':
