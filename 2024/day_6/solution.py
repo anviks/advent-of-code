@@ -21,19 +21,14 @@ for coord, value in grid.items():
 def walk(gr: dict[complex, str]):
     loc = start
     d = -1
-    visited = {(loc, d)}
-    while True:
-        while loc not in gr:
-            loc += d
-            if not (0 <= loc.imag < width and 0 <= loc.real < height) or (loc, d) in visited:
-                break
+    visited = set()
+    while (0 <= loc.imag < width and 0 <= loc.real < height) and (loc, d) not in visited:
+        if loc not in gr:
             visited.add((loc, d))
+            loc += d
         else:
-            visited.remove((loc, d))
             loc -= d
             d /= 1j
-            continue
-        break
     return {p for p, _ in visited}, (loc, d) in visited
 
 
