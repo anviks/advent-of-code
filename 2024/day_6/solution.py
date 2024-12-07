@@ -20,51 +20,31 @@ for coord, value in grid.items():
 
 def walk(gr: dict[complex, str]):
     loc = start
-    visited = {loc}
-    d = -1
-    while True:
-        while (v := gr.get(loc)) is None:
-            loc += d
-            if not (0 <= loc.imag < width and 0 <= loc.real < height):
-                break
-            visited.add(loc)
-        else:
-            visited.remove(loc)
-            loc -= d
-            assert v == '#'
-            d /= 1j
-            continue
-        break
-    return visited
-
-
-def walk2(gr: dict[complex, str]):
-    loc = start
     d = -1
     visited = {(loc, d)}
     while True:
-        while (v := gr.get(loc)) is None:
+        while loc not in gr:
             loc += d
             if not (0 <= loc.imag < width and 0 <= loc.real < height) or (loc, d) in visited:
                 break
             visited.add((loc, d))
         else:
+            visited.remove((loc, d))
             loc -= d
-            assert v == '#'
             d /= 1j
             continue
         break
-    return (loc, d) in visited
+    return {p for p, _ in visited}, (loc, d) in visited
 
 
 @stopwatch
 def part1():
-    return len(walk(grid))
+    return len(walk(grid)[0])
 
 
 @stopwatch
 def part2():
-    return sum(walk2(grid | {pos: '#'}) for pos in walk(grid))
+    return sum(walk(grid | {pos: '#'})[1] for pos in walk(grid)[0])
 
 
 if __name__ == '__main__':
