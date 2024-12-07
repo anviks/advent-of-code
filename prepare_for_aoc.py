@@ -32,22 +32,47 @@ def get_bool_input(prompt: str) -> bool:
         print('Invalid input. Please enter y/yes or n/no.')
 
 
-def create_files(*, overwrite_solution: bool):
+def get_enhanced_bool_input(prompt: str) -> tuple[bool, bool]:
+    prompt += '\n[Y] Yes  [N] No  [A] Yes to all  [L] No to all\n'
+    while True:
+        answer = input(prompt).lower()
+        if answer in ('y', 'yes'):
+            return True, False
+        elif answer in ('n', 'no'):
+            return False, False
+        elif answer == 'a':
+            return True, True
+        elif answer == 'l':
+            return False, True
+        print('Invalid input. Please enter y/yes, n/no, a or l.')
+
+
+def create_files():
+    overwrite_all = None
+
     for year in range(start_year, start_year + years_count):
         for day in range(start_day, start_day + days_count):
-            day_folder = f"{year}/day_{day}"
-            data_file = day_folder + "/data.txt"
-            example_file = day_folder + "/example.txt"
-            solution_file = day_folder + "/solution.py"
-            template_file = "template.txt"
+            overwrite = False
+
+            day_folder = f'{year}/day_{day}'
+            data_file = day_folder + '/data.txt'
+            example_file = day_folder + '/example.txt'
+            solution_file = day_folder + '/solution.py'
+            template_file = 'template.txt'
 
             os.makedirs(day_folder, exist_ok=True)
 
             # Ensure that the files exist without overwriting them.
-            with open(data_file, 'a'), open(solution_file, 'a'), open(example_file, 'a'):
+            with open(data_file, 'a'), open(example_file, 'a'):
                 pass
 
-            if overwrite_solution:
+            if os.path.exists(solution_file) and overwrite_all is None:
+                overwrite, apply_to_all = get_enhanced_bool_input(f'{solution_file} already exists. Overwrite it with the template?')
+
+                if apply_to_all:
+                    overwrite_all = overwrite
+
+            if not os.path.exists(solution_file) or overwrite or overwrite_all:
                 with open(template_file, 'r') as template, open(solution_file, 'w') as solution:
                     solution.write(template.read())
 
@@ -116,6 +141,6 @@ days_count = get_int_input('Days count: ', 1)
 if start_day == -1:
     raise ValueError('Invalid day.')
 
-create_files(overwrite_solution=get_bool_input('Do you want to overwrite the solution files? (y/n): '))
+create_files()
 if get_bool_input('Do you want to fetch the input data? (y/n): '):
     get_input_data()
