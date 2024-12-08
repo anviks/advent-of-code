@@ -53,5 +53,5 @@ def packets(filename: str, part: int):
 
 
 if __name__ == '__main__':
-    print(packets("data.txt", 1))
-    print(packets("data.txt", 2))
+    print(packets("data.txt", 1))  # 6046
+    print(packets("data.txt", 2))  # 21423

@@ -25,6 +25,6 @@ def part_2(filename: str):
 
 
 if __name__ == '__main__':
-    print(part_1("data.txt"))
-    print(part_2("data.txt"))
-
+    # TODO: Wrong answers?
+    print(part_1("data.txt"))  # 68442
+    print(part_2("data.txt"))  # 204837

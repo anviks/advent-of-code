@@ -1,7 +1,5 @@
-from collections import defaultdict
-
-from utils_anviks import parse_file_content, stopwatch
 import networkx as nx
+from utils_anviks import parse_file_content, stopwatch
 
 
 class AdventOfCodeSolver:

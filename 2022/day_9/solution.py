@@ -53,4 +53,5 @@ def day_9(filename: str, part: int):
 
 if __name__ == '__main__':
     print(day_9("data.txt", 1))  # 6266
+    # TODO: Implement part 2
     print(day_9("data.txt", 2))  # 2369

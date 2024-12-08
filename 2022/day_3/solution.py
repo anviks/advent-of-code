@@ -33,5 +33,5 @@ def part_2(filename: str):
 
 
 if __name__ == '__main__':
-    print(part_1("data.txt"))
-    print(part_2("data.txt"))
+    print(part_1("data.txt"))  # 8139
+    print(part_2("data.txt"))  # 2668

@@ -67,5 +67,6 @@ def solve_part_two(instructions, movement_map):
 
 
 if __name__ == '__main__':
+    # TODO: Wrong answers?
     print(solution(1))  # 20569
     print(solution(2))  # 21366921060721

@@ -1,6 +1,5 @@
-from collections import deque
-from typing import Generator
 from heapq import heappop as pop, heappush as push
+from typing import Generator
 
 from utils_anviks import parse_file_content, stopwatch
 

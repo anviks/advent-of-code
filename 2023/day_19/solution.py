@@ -129,8 +129,6 @@ def part_2(ranges, rules, rule_name='in'):
 if __name__ == '__main__':
     f = solution(1)
     print(f)  # 377025
-    print(f == 377025)
 
     g = solution(2)
     print(g)  # 135506683246673  |  0.0045s
-    print(g == 135506683246673)

@@ -29,3 +29,8 @@ def part_2(file_name: str):
         else:
             my_points += 3
     return my_points
+
+
+if __name__ == "__main__":
+    print(part_1("data.txt"))  # 12855
+    print(part_2("data.txt"))  # 13726

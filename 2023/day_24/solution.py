@@ -50,4 +50,4 @@ def solution(part: int):
 
 if __name__ == '__main__':
     print(solution(1))  # 18651
-    print(solution(2))
+    print(solution(2))  # TODO

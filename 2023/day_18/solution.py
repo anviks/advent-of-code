@@ -101,7 +101,7 @@ def solution(part: int):
         vertices.append(c_range[0])
         border_size += abs(c_range[1] - c_range[0])
 
-    return shoelace_formula(vertices) + (border_size / 2) + 1
+    return int(shoelace_formula(vertices) + (border_size / 2) + 1)
 
 
 if __name__ == '__main__':

@@ -22,8 +22,8 @@ def solution(part: int):
 
 
 if __name__ == '__main__':
-    print(solution(1))
-    print(solution(2))
+    print(solution(1))  # 336120
+    print(solution(2))  # 96864235
 
     #     fuel_consumptions = {}
     #

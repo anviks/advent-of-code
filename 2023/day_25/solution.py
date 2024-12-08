@@ -18,4 +18,3 @@ def solution():
 
 if __name__ == '__main__':
     print(solution())  # 533628
-    print(2 < 5)

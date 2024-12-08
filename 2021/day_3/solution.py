@@ -55,5 +55,5 @@ def solution(part: int):
 
 
 if __name__ == '__main__':
-    print(solution(1))
-    print(solution(2))
+    print(solution(1))  # 4191876
+    print(solution(2))  # 3414905

@@ -20,5 +20,5 @@ def day_6(filename: str, part: int):
 
 
 if __name__ == '__main__':
-    print(day_6("data.txt", 1))
-    print(day_6("data.txt", 2))
+    print(day_6("data.txt", 1))  # 1142
+    print(day_6("data.txt", 2))  # 2803
