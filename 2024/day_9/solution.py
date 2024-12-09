@@ -41,20 +41,23 @@ def part1():
 
 @stopwatch
 def part2():
-    l, r = 1, len(data2) - 1
+    r = len(data2) - 1
 
     while r > 0:
         l = 1
 
         # Find the next file from the right
-        while data2[r].imag == 0:
+        while r > 0 and data2[r].imag == 0:
             r -= 1
 
+        if r == 0:
+            break
+
         # Find the first free space, where the entire file can fit
-        while l < len(data2) and not (data2[l].imag == 0 and data2[l].real >= data2[r].real):
+        while l < r and not (data2[l].imag == 0 and data2[l].real >= data2[r].real):
             l += 1
 
-        if l < len(data2) and l < r:
+        if l < r:
             # Switch the file with the free space
             data2[l] -= data2[r].real
             data2[r - 1] += data2[r].real  # In this part, free space preservation is necessary!
@@ -67,4 +70,4 @@ def part2():
 
 if __name__ == '__main__':
     print(part1())  # 6446899523367    |   0.037 seconds
-    print(part2())  # 6478232739671     |   33.69 seconds
+    print(part2())  # 6478232739671    |   16.61 seconds
