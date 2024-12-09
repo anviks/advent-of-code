@@ -2,10 +2,10 @@ from utils_anviks import parse_file_content, stopwatch
 
 file = 'data.txt'
 file0 = 'example.txt'
-data = parse_file_content(file, ('',), int)
-data = [data[i - 2] + (1 - i % 2) * i * .5j for i in range(2, len(data) + 2)]
-data1 = data.copy()
-data2 = data.copy()
+data = parse_file_content(file0, ('',), int)
+# Example: [(2+1j), (3+0j), (3+2j), (3+0j), (1+3j), (3+0j), (3+4j), (1+0j), (2+5j), (1+0j), (4+6j), (1+0j), (4+7j), (1+0j), (3+8j), (1+0j), (4+9j), 0j, (2+10j)]
+data1 = [data[i] + (i % 2 == 0) * (i + 2) * .5j for i in range(len(data))]
+data2 = data1.copy()
 
 
 @stopwatch
@@ -29,7 +29,7 @@ def part1():
     pos = 0
     checksum = 0
 
-    for n in data:
+    for n in data1:
         for _ in range(int(n.real)):
             checksum += pos * (n.imag - 1)
             pos += 1
