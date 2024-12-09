@@ -36,9 +36,10 @@ Each day's solution is organized into its own directory, named according to the 
 
 ## Usage
 
-To run the solutions, place an input file `data.txt` in the directory of the day's solution
-and install my utility package using the following command:
+To run the solutions, place an input file `data.txt` in the directory of the day's solution.
+Dependencies are listed in the `requirements.txt` file in the root directory.
+To install the dependencies, run:
 
 ```bash
-pip install utils-anviks
+pip install -r requirements.txt
 ```
