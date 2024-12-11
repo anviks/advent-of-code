@@ -1,5 +1,5 @@
 from utils_anviks import parse_file_content, stopwatch
-from collections import Counter
+from collections import Counter, defaultdict
 
 file = 'data.txt'
 file0 = 'example.txt'
@@ -7,7 +7,7 @@ data = parse_file_content(file, (' ',), int)
 
 
 def blink(c1: Counter):
-    c2 = Counter()
+    c2 = defaultdict(int)
 
     for stone, count in c1.items():
         if stone == 0:
