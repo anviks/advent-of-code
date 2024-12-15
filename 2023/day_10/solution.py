@@ -20,44 +20,24 @@ def find_starting_point(data: list[list[str]]):
             return i, row.index("S")
 
 
+DIRECTION_MAP = {
+    "L": {Direction.DOWN: Direction.RIGHT, Direction.LEFT: Direction.UP},
+    "J": {Direction.RIGHT: Direction.UP, Direction.DOWN: Direction.LEFT},
+    "7": {Direction.RIGHT: Direction.DOWN, Direction.UP: Direction.LEFT},
+    "F": {Direction.UP: Direction.RIGHT, Direction.LEFT: Direction.DOWN},
+}
 def make_move(pipe: str, previous_move: Direction, i: int, j: int) -> tuple[int, int, Direction]:
-    new_direction = previous_move
-
     # If the pipe is straight, we can move in the same direction as before.
-    match pipe:
-        case "L":
-            if previous_move == Direction.DOWN:
-                new_direction = Direction.RIGHT
-            else:
-                new_direction = Direction.UP
-        case "J":
-            if previous_move == Direction.RIGHT:
-                new_direction = Direction.UP
-            else:
-                new_direction = Direction.LEFT
-        case "7":
-            if previous_move == Direction.RIGHT:
-                new_direction = Direction.DOWN
-            else:
-                new_direction = Direction.LEFT
-        case "F":
-            if previous_move == Direction.UP:
-                new_direction = Direction.RIGHT
-            else:
-                new_direction = Direction.DOWN
-
+    new_direction = DIRECTION_MAP.get(pipe, {}).get(previous_move, previous_move)
     return new_direction.apply(i, j) + (new_direction,)
 
 
 @stopwatch
 def solution(part: int):
     data = parse_file_content('data.txt', ('\n', ''), str)
-    coords = set()
     i, j = find_starting_point(data)
-    coords.add((i, j))
+    coords = {(i, j)}
     prev_move = None
-
-    # ("|", "-", "L", "J", "7", "F")
 
     if data[i - 1][j] in ("|", "7", "F"):
         i -= 1
@@ -81,6 +61,9 @@ def solution(part: int):
         coords.add((i, j))
         steps += 1
 
+    if part == 1:
+        return steps // 2
+
     enclosed_tiles = 0
 
     for i, row in enumerate(data):
@@ -96,12 +79,14 @@ def solution(part: int):
                 enclosed_tiles += 1
                 data[i][j] = "O"
 
-    with open("modified.txt", "w") as f:
-        f.write("\n".join("".join(line) for line in data))
+    return enclosed_tiles
 
-    return steps // 2 if part == 1 else enclosed_tiles
+
+def draw_grid(data: list[list[str]]):
+    with open("grid.txt", "w") as f:
+        f.write("\n".join("".join(line) for line in data))
 
 
 if __name__ == '__main__':
-    print(solution(1))  # 6931
-    print(solution(2))  # 357
+    print(solution(1))  # 6931  | 0.018 seconds
+    print(solution(2))  # 357   | 0.017 seconds
