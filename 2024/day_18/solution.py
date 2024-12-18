@@ -34,12 +34,19 @@ def part1():
 
 @stopwatch
 def part2():
-    for i, j in data[1024:]:
-        grid[j, i] = '#'
-        if not part1():
-            return f'{i},{j}'
+    global grid
+    low = 1024
+    high = len(data)
+    while low < high:
+        mid = (low + high) // 2
+        grid = Grid.from_function(71, 71, lambda i, j: '#' if [j, i] in data[:mid] else '.')
+        if part1():
+            low = mid + 1
+        else:
+            high = mid
+    return ','.join(map(str, data[low - 1]))
 
 
 if __name__ == '__main__':
     print(part1())  # 272       | 0.024 seconds
-    print(part2())  # 16,44     | 29.9 seconds
+    print(part2())  # 16,44     | 2.1 seconds
