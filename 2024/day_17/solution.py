@@ -17,23 +17,19 @@ def execute(a, b, c):
         6: lambda: c,
     }
 
-    def i0(x): nonlocal a; a >>= combo[x]()
-    def i1(x): nonlocal b; b ^= x
-    def i2(x): nonlocal b; b = combo[x]() % 8
-    def i3(x):
-        if a == 0: return
-        nonlocal pointer
-        pointer = x - 2
-    def i4(x): nonlocal b; b ^= c
-    def i5(x): return combo[x]() % 8
-    def i6(x): nonlocal b; b = a >> combo[x]()
-    def i7(x): nonlocal c; c = a >> combo[x]()
-
     while pointer < len(program):
         opcode, operand = program[pointer:pointer + 2]
-        out = locals()[f'i{opcode}'](operand)
-        if out is not None:
-            result.append(out)
+
+        match opcode:
+            case 0: a >>= combo[operand]()
+            case 1: b ^= operand
+            case 2: b = combo[operand]() % 8
+            case 3: pointer = operand - 2 if a != 0 else pointer
+            case 4: b ^= c
+            case 5: result.append(combo[operand]() % 8)
+            case 6: b = a >> combo[operand]()
+            case 7: c = a >> combo[operand]()
+
         pointer += 2
 
     return result
