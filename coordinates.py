@@ -192,10 +192,3 @@ class Cell:
 
     def __repr__(self):
         return f"{self.__class__.__name__}(row={self.row}, column={self.column})"
-
-
-if __name__ == '__main__':
-    print(Cell(4, 7) / Cell(2, 3))
-    print(Cell(-1, 0) / Cell(0, 1))
-    print(-1 / 1j)
-
