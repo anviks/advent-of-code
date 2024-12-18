@@ -35,18 +35,22 @@ def part1():
 @stopwatch
 def part2():
     global grid
+    grid2 = grid.copy()
     low = 1024
     high = len(data)
     while low < high:
         mid = (low + high) // 2
-        grid = Grid.from_function(71, 71, lambda i, j: '#' if [j, i] in data[:mid] else '.')
+        grid = grid2.copy()
+        for i, j in data[1024:mid]:
+            grid[j, i] = '#'
         if part1():
             low = mid + 1
         else:
             high = mid
-    return ','.join(map(str, data[low - 1]))
+    i, j = data[low - 1]
+    return f'{i},{j}'
 
 
 if __name__ == '__main__':
     print(part1())  # 272       | 0.024 seconds
-    print(part2())  # 16,44     | 2.1 seconds
+    print(part2())  # 16,44     | 0.040 seconds
