@@ -7,28 +7,19 @@ def execute(a, b, c):
     pointer = 0
     result = []
 
-    combo = {
-        0: lambda: 0,
-        1: lambda: 1,
-        2: lambda: 2,
-        3: lambda: 3,
-        4: lambda: a,
-        5: lambda: b,
-        6: lambda: c,
-    }
-
     while pointer < len(program):
+        combo = (0, 1, 2, 3, a, b, c)
         opcode, operand = program[pointer:pointer + 2]
 
         match opcode:
-            case 0: a >>= combo[operand]()
+            case 0: a >>= combo[operand]
             case 1: b ^= operand
-            case 2: b = combo[operand]() % 8
+            case 2: b = combo[operand] % 8
             case 3: pointer = operand - 2 if a != 0 else pointer
             case 4: b ^= c
-            case 5: result.append(combo[operand]() % 8)
-            case 6: b = a >> combo[operand]()
-            case 7: c = a >> combo[operand]()
+            case 5: result.append(combo[operand] % 8)
+            case 6: b = a >> combo[operand]
+            case 7: c = a >> combo[operand]
 
         pointer += 2
 
@@ -53,4 +44,4 @@ def part2():
 
 if __name__ == '__main__':
     print(part1())  # 4,3,2,6,4,5,3,2,4     | 0.000034 seconds
-    print(part2())  # 164540892147389       | 0.009 seconds
+    print(part2())  # 164540892147389       | 0.0092 seconds
