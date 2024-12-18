@@ -9,12 +9,11 @@ file = 'data.txt'
 file0 = 'example.txt'
 data = parse_file_content(file, ('\n', ','), int)
 grid = Grid.from_function(71, 71, lambda i, j: '#' if [j, i] in data[:1024] else '.')
-# I solved part 2 by just changing how many bytes I include in the grid, essentially doing a manual binary search
+# At first, I solved part 2 by just changing how many bytes I include in the grid, essentially doing a manual binary search
 # to find the first byte that causes the path to be blocked (part1 would return None).
 # That was by far the quickest way to find out the answer.
 
 
-@stopwatch
 def part1():
     start = Cell(0, 0)
     target = Cell(70, 70)
@@ -33,10 +32,14 @@ def part1():
                 queue.append((length + 1, nb))
 
 
+@stopwatch
 def part2():
-    pass
+    for i, j in data[1024:]:
+        grid[j, i] = '#'
+        if not part1():
+            return f'{i},{j}'
 
 
 if __name__ == '__main__':
     print(part1())  # 272       | 0.024 seconds
-    print(part2())  # 16,44
+    print(part2())  # 16,44     | 29.9 seconds
