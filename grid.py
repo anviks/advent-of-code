@@ -49,14 +49,14 @@ class Grid(Generic[T]):
     def find_first(self, value: T) -> Cell | None:
         return next(self.find(value), None)
 
-    def transpose(self) -> None:
-        self.grid = [list(col) for col in zip(*self.grid)]
+    def transpose(self) -> 'Grid[T]':
+        return Grid([list(col) for col in zip(*self.grid)])
 
-    def rotate_clockwise(self) -> None:
-        self.grid = [list(col) for col in zip(*self.grid[::-1])]
+    def rotate_clockwise(self) -> 'Grid[T]':
+        return Grid([list(col) for col in zip(*self.grid[::-1])])
 
-    def rotate_counter_clockwise(self) -> None:
-        self.grid = [list(col) for col in zip(*self.grid)][::-1]
+    def rotate_counter_clockwise(self) -> 'Grid[T]':
+        return Grid([list(col) for col in zip(*self.grid)][::-1])
 
     def neighbours(self, cell: Cell, nb_type: Literal['cardinal', 'diagonal', 'all']) -> Generator[Cell, Any, None]:
         return (nb for nb in cell.neighbours(nb_type) if nb in self)
