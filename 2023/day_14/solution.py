@@ -2,6 +2,8 @@ from typing import TypeVar
 
 from utils_anviks import parse_file_content, stopwatch
 
+from grid import Grid
+
 _T = TypeVar("_T")
 
 
@@ -15,7 +17,7 @@ def solution(part: int):
     :param part: The part of the problem to solve.
     :return: The solution for the given part.
     """
-    data = parse_file_content('data.txt', ('\n', ''), str)
+    data = Grid(parse_file_content('data.txt', ('\n', ''), str))
 
     if part == 1:
         tilt_north(data)
@@ -24,7 +26,7 @@ def solution(part: int):
     else:
         total_loads = []
 
-        for i in range(200):
+        for i in range(165):
             tilt_cycle(data)
             total_loads.append(calculate_total_load(data))
 
@@ -33,7 +35,7 @@ def solution(part: int):
         return cycle[(1_000_000_000 - len(total_loads) - 1) % len(cycle)]
 
 
-def calculate_total_load(rocks):
+def calculate_total_load(rocks: Grid[str]) -> int:
     """
     Calculate the total load of the rocks.
 
@@ -45,8 +47,8 @@ def calculate_total_load(rocks):
     """
     load = 0
 
-    for i, line in enumerate(rocks):
-        load += (len(rocks) - i) * line.count('O')
+    for i, line in enumerate(rocks.rows):
+        load += (rocks.height - i) * line.count('O')
 
     return load
 
@@ -58,40 +60,37 @@ def _find_cycle_helper(sequence: list[_T], window_size: int) -> list[_T] | None:
 
 
 def find_cycle(sequence: list[_T]) -> list[_T] | None:
-    result = None
-
     for i in range(2, len(sequence) // 2 + 1):
-        result = _find_cycle_helper(sequence, i)
-        if result:
+        if result := _find_cycle_helper(sequence, i):
             return result
 
-    return result
+    return None
 
 
-def tilt_cycle(rocks: list[list[str]]) -> None:
+def tilt_cycle(rocks: Grid[str]) -> None:
     for _ in range(4):
         tilt_north(rocks)
-        rocks[:] = [list(row) for row in zip(*rocks[::-1])]
+        rocks.rotate_clockwise()
 
 
-def tilt_north(rocks: list[list[str]]) -> None:
-    for i in range(len(rocks[0])):
+def tilt_north(rocks: Grid[str]) -> None:
+    for i in range(rocks.width):
         obstacle_index = -1
-        for j in range(len(rocks)):
-            rock = rocks[j][i]
+        for j in range(rocks.height):
+            rock = rocks.grid[j][i]
 
             match rock:
                 case 'O':
                     if obstacle_index + 1 == j:
                         obstacle_index += 1
                     else:
-                        rocks[obstacle_index + 1][i] = 'O'
+                        rocks.grid[obstacle_index + 1][i] = 'O'
                         obstacle_index += 1
-                        rocks[j][i] = '.'
+                        rocks.grid[j][i] = '.'
                 case '#':
                     obstacle_index = j
 
 
 if __name__ == '__main__':
-    print(solution(1))  # 107142
-    print(solution(2))  # 104815
+    print(solution(1))  # 107142    | 0.004 seconds
+    print(solution(2))  # 104815    | 0.69 seconds
