@@ -88,12 +88,14 @@ class Grid(Generic[T]):
             s += column_sep.join(map(str, row)) + row_sep
         return s
 
-    def __getitem__(self, cell: Cell | tuple[int, int] | int) -> T:
+    def __getitem__(self, cell: CoordSequence | Cell | int) -> T:
         if isinstance(cell, int):
             return self.grid[cell]
-        if isinstance(cell, tuple):
+        if is_coord_sequence(cell):
             return self.grid[cell[0]][cell[1]]
-        return self.grid[cell.row][cell.column]
+        if isinstance(cell, Cell):
+            return self.grid[cell.row][cell.column]
+        raise TypeError(f'Invalid index type: {type(cell)}')
 
     def __setitem__(self, key: CoordSequence | Cell | Sequence[CoordSequence | Cell], value: T):
         if is_coord_sequence(key):
@@ -107,12 +109,18 @@ class Grid(Generic[T]):
             elif isinstance(key[0], Cell):
                 for cell in key:
                     self.grid[cell.row][cell.column] = value
-
-    def __contains__(self, item: Cell | tuple[int, int]) -> bool:
-        if isinstance(item, tuple):
-            item1, item2 = item
+            else:
+                raise TypeError(f'Invalid index type: {type(key[0])}')
         else:
+            raise TypeError(f'Invalid index type: {type(key)}')
+
+    def __contains__(self, item: CoordSequence | Cell) -> bool:
+        if is_coord_sequence(item):
+            item1, item2 = item
+        elif isinstance(item, Cell):
             item1, item2 = item.row, item.column
+        else:
+            raise TypeError(f'Invalid index type: {type(item)}')
         return 0 <= item1 < self.height and 0 <= item2 < self.width
 
     def __iter__(self):
