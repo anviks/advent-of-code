@@ -1,4 +1,4 @@
-from typing import Any, Callable, Generator, Generic, Literal, Protocol, TypeVar
+from typing import Any, Callable, Generator, Generic, Literal, Protocol, Sequence, TypeVar, TypeIs
 
 from coordinates import Cell
 
@@ -14,6 +14,11 @@ class AddMul(Add, Protocol):
 T = TypeVar('T')
 R = TypeVar('R')
 Addable = TypeVar('Addable', bound=Add)
+CoordSequence = Sequence[int]
+
+
+def is_coord_sequence(obj: Any) -> TypeIs[CoordSequence]:
+    return isinstance(obj, Sequence) and len(obj) == 2 and isinstance(obj[0], int) and isinstance(obj[1], int)
 
 
 class Grid(Generic[T]):
@@ -77,6 +82,12 @@ class Grid(Generic[T]):
         for cell, value in self.items():
             func(cell, value)
 
+    def join_to_str(self, column_sep: str = '', row_sep: str = '\n') -> str:
+        s = ''
+        for row in self.grid:
+            s += column_sep.join(map(str, row)) + row_sep
+        return s
+
     def __getitem__(self, cell: Cell | tuple[int, int] | int) -> T:
         if isinstance(cell, int):
             return self.grid[cell]
@@ -84,11 +95,18 @@ class Grid(Generic[T]):
             return self.grid[cell[0]][cell[1]]
         return self.grid[cell.row][cell.column]
 
-    def __setitem__(self, cell: Cell | tuple[int, int], value: T):
-        if isinstance(cell, tuple):
-            self.grid[cell[0]][cell[1]] = value
-        else:
-            self.grid[cell.row][cell.column] = value
+    def __setitem__(self, key: CoordSequence | Cell | Sequence[CoordSequence | Cell], value: T):
+        if is_coord_sequence(key):
+            self.grid[key[0]][key[1]] = value
+        elif isinstance(key, Cell):
+            self.grid[key.row][key.column] = value
+        elif isinstance(key, Sequence):
+            if is_coord_sequence(key[0]):
+                for cell in key:
+                    self.grid[cell[0]][cell[1]] = value
+            elif isinstance(key[0], Cell):
+                for cell in key:
+                    self.grid[cell.row][cell.column] = value
 
     def __contains__(self, item: Cell | tuple[int, int]) -> bool:
         if isinstance(item, tuple):
@@ -105,12 +123,6 @@ class Grid(Generic[T]):
         for row in self.grid:
             s += f'    {row},\n'
         return s + ')'
-
-    def join_to_str(self, column_sep: str = '', row_sep: str = '\n') -> str:
-        s = ''
-        for row in self.grid:
-            s += column_sep.join(map(str, row)) + row_sep
-        return s
 
     def __eq__(self, other):
         return self.grid == other.grid

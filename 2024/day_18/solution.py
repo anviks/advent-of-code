@@ -8,12 +8,15 @@ from grid import Grid
 file = 'data.txt'
 file0 = 'example.txt'
 data = parse_file_content(file, ('\n', ','), int)
-grid = Grid.from_function(71, 71, lambda i, j: '#' if [j, i] in data[:1024] else '.')
+data = [row[::-1] for row in data]
+grid = Grid.fill(71, 71, '.')
+grid[data[:1024]] = '#'
 # At first, I solved part 2 by just changing how many bytes I include in the grid, essentially doing a manual binary search
 # to find the first byte that causes the path to be blocked (part1 would return None).
 # That was by far the quickest way to find out the answer.
 
 
+@stopwatch
 def part1():
     start = Cell(0, 0)
     target = Cell(70, 70)
@@ -34,23 +37,19 @@ def part1():
 
 @stopwatch
 def part2():
-    global grid
-    grid2 = grid.copy()
-    low = 1024
-    high = len(data)
+    low, high = 1024, len(data)
     while low < high:
         mid = (low + high) // 2
-        grid = grid2.copy()
-        for i, j in data[1024:mid]:
-            grid[j, i] = '#'
+        grid[data[1024:mid]] = '#'
+        grid[data[mid:]] = '.'
         if part1():
             low = mid + 1
         else:
             high = mid
     i, j = data[low - 1]
-    return f'{i},{j}'
+    return f'{j},{i}'
 
 
 if __name__ == '__main__':
     print(part1())  # 272       | 0.024 seconds
-    print(part2())  # 16,44     | 0.040 seconds
+    print(part2())  # 16,44     | 0.038 seconds
