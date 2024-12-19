@@ -1,4 +1,5 @@
 import re
+import numpy as np
 
 from utils_anviks import parse_file_content, stopwatch
 from heapq import heappush as push, heappop as pop
@@ -36,10 +37,18 @@ def part1():
     return acc
 
 
+@stopwatch
 def part2():
-    pass
+    tokens = 0
+    for a, b, prize in data:
+        matrix = np.array([*zip(a, b)])
+        prize_vector = np.array(prize) + 10000000000000
+        result = np.round(np.linalg.solve(matrix, prize_vector))
+        if (result @ matrix.transpose() == prize_vector).all():
+            tokens += int(result @ (3, 1))
+    return tokens
 
 
 if __name__ == '__main__':
-    print(part1())  # 26299     | 3.85 seconds
-    print(part2())
+    print(part1())  # 26299             | 3.62 seconds
+    print(part2())  # 107824497933339   | 0.007 seconds
