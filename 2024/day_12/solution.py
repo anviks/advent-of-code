@@ -13,7 +13,7 @@ def flood_fill(cell: Cell, char: str, total_visited: set[Cell]):
     stack = [cell]
     total_visited.add(cell)
     area_cells = {cell}
-    area = perimeter = 0
+    area = 0
 
     while stack:
         c = stack.pop()
@@ -24,9 +24,6 @@ def flood_fill(cell: Cell, char: str, total_visited: set[Cell]):
                 total_visited.add(nb)
                 area_cells.add(nb)
                 stack.append(nb)
-            else:
-                if nb not in grid or grid[nb] != char:
-                    perimeter += 1
 
     edges = set()
 
@@ -35,6 +32,7 @@ def flood_fill(cell: Cell, char: str, total_visited: set[Cell]):
             if point + d not in area_cells:
                 edges.add((point, d))
 
+    perimeter = len(edges)
     sides = len(edges - {(p + d * 1j, d) for p, d in edges})
 
     return area, perimeter, sides
@@ -53,4 +51,4 @@ def solution():
 
 
 if __name__ == '__main__':
-    print(*solution(), sep='\n')  # 1434856, 891106    | 0.32 seconds
+    print(*solution(), sep='\n')  # 1434856, 891106    | 0.23 seconds
