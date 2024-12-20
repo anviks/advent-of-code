@@ -25,8 +25,8 @@ def count_possibilities(design: str):
     if design in towels:
         poss += 1
     for i in range(1, len(design)):
-        if design[:i] in towels and (add := count_possibilities(design[i:])):
-            poss += add
+        if design[:i] in towels:
+            poss += count_possibilities(design[i:])
     return poss
 
 
