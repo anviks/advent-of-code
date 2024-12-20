@@ -41,27 +41,16 @@ def flood_fill(cell: Cell, char: str, total_visited: set[Cell]):
 
 
 @stopwatch
-def part1():
-    total = 0
+def solution():
+    total1 = total2 = 0
     visited = set()
     for coord, value in grid.items():
         if coord not in visited:
             area, perimeter, sides = flood_fill(coord, value, visited)
-            total += area * perimeter
-    return total
-
-
-@stopwatch
-def part2():
-    total = 0
-    visited = set()
-    for coord, value in grid.items():
-        if coord not in visited:
-            area, perimeter, sides = flood_fill(coord, value, visited)
-            total += area * sides
-    return total
+            total1 += area * perimeter
+            total2 += area * sides
+    return total1, total2
 
 
 if __name__ == '__main__':
-    print(part1())  # 1434856   | 0.22 seconds
-    print(part2())  # 891106
+    print(*solution(), sep='\n')  # 1434856, 891106    | 0.32 seconds
