@@ -10,7 +10,7 @@ grid = {
     for j in range(len(data[i]))
     if data[i][j] != '.'
 }
-print(grid)
+
 for coord, value in grid.items():
     if value == '^':
         start = coord
@@ -43,5 +43,5 @@ def part2():
 
 
 if __name__ == '__main__':
-    print(part1())  # 5453
-    print(part2())  # 2188
+    print(part1())  # 5453  | 0.007 seconds
+    print(part2())  # 2188  | 21.8 seconds
