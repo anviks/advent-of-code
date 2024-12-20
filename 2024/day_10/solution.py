@@ -1,20 +1,20 @@
 from collections import deque
 
 from utils_anviks import parse_file_content, stopwatch
-import numpy as np
+
+from grid import Grid
 
 file = 'data.txt'
 file0 = 'example.txt'
-data = parse_file_content(file, ('\n', ''), int)
-data = np.array(data)
+data = Grid(parse_file_content(file, ('\n', ''), int))
 
 
 @stopwatch
 def solution(part: int):
-    indices = np.where(data == 0)
+    zero_indices = data.find(0)
     result = 0
 
-    for zero_coord in zip(*indices):
+    for zero_coord in zero_indices:
         visited = set()
         d = deque([zero_coord])
         while len(d):
@@ -29,14 +29,13 @@ def solution(part: int):
                 result += 1
                 continue
 
-            for nb in ((-1, 0), (1, 0), (0, -1), (0, 1)):
-                new_coord = (current[0] + nb[0], current[1] + nb[1])
-                if all(0 <= index < length for index, length in zip(new_coord, data.shape)) and data[new_coord] == data[current] + 1:
-                    d.append(new_coord)
+            for nb in data.neighbours(current, 'cardinal'):
+                if data[nb] == data[current] + 1:
+                    d.append(nb)
 
     return result
 
 
 if __name__ == '__main__':
-    print(solution(1))  # 593
-    print(solution(2))  # 1192
+    print(solution(1))  # 593   | 0.021 seconds
+    print(solution(2))  # 1192  | 0.029 seconds
