@@ -39,8 +39,8 @@ def part1():
 
 @stopwatch
 def part2():
-    for i in range(10_000):
-        cells = [robot[0] for robot in data]
+    for i in range(100, 10_000):
+        cells = [robot[0] for robot in robots]
         move()
         if len(cells) == len(set(cells)):
             return i
@@ -49,4 +49,4 @@ def part2():
 
 if __name__ == '__main__':
     print(part1())  # 219512160 | 0.07 seconds
-    print(part2())  # 6298      | 5.05 seconds
+    print(part2())  # 6398      | 5.05 seconds
