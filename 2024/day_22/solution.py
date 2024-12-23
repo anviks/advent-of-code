@@ -7,14 +7,10 @@ file0 = 'example.txt'
 data = parse_file_content(file, ('\n',), int)
 
 
-def prune(n: int):
-    return n % 16777216
-
-
 def next_secret(n: int):
-    n = prune((n * 64) ^ n)
-    n = prune((n // 32) ^ n)
-    return prune((n * 2048) ^ n)
+    n ^= n << 6 & 0xFFFFFF
+    n ^= n >> 5 & 0xFFFFFF
+    return n << 11 ^ n & 0xFFFFFF
 
 
 @stopwatch
