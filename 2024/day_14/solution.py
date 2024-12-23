@@ -18,6 +18,12 @@ def move():
         cells[i].row %= h
         cells[i].column %= w
 
+
+@stopwatch
+def part1():
+    for _ in range(100):
+        move()
+
     quadrants = [0] * 4
 
     for cell in cells:
@@ -30,16 +36,8 @@ def move():
 
 
 @stopwatch
-def part1():
-    a = 0
-    for _ in range(100):
-        a = move()
-    return a
-
-
-@stopwatch
 def part2():
-    for i in range(100, 10_000):
+    for i in range(101, 10_000):
         move()
         if len(cells) == len(set(cells)):
             return i
@@ -47,5 +45,5 @@ def part2():
 
 
 if __name__ == '__main__':
-    print(part1())  # 219512160 | 0.067 seconds
-    print(part2())  # 6398      | 4.93 seconds
+    print(part1())  # 219512160 | 0.041 seconds
+    print(part2())  # 6398      | 3.20 seconds
