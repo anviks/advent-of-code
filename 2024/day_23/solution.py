@@ -9,9 +9,10 @@ graph = nx.Graph(data)
 
 @stopwatch
 def part1():
-    connected = [nodes for nodes in nx.enumerate_all_cliques(graph) if len(nodes) == 3]
-    t_connected = [nodes for nodes in connected if any(node[0] == 't' for node in nodes)]
-    return len(t_connected)
+    return len([
+        nodes for nodes in nx.enumerate_all_cliques(graph)
+        if len(nodes) == 3 and any(node[0] == 't' for node in nodes)
+    ])
 
 
 @stopwatch
