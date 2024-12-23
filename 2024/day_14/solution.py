@@ -12,18 +12,16 @@ w, h = 101, 103
 cells, vectors = map(list, zip(*robots))  # type: ignore
 
 
-def move():
+def move(n: int = 1):
     for i in range(len(robots)):
-        cells[i] += vectors[i]
+        cells[i] += vectors[i] * n
         cells[i].row %= h
         cells[i].column %= w
 
 
 @stopwatch
 def part1():
-    for _ in range(100):
-        move()
-
+    move(100)
     quadrants = [0] * 4
 
     for cell in cells:
@@ -45,5 +43,5 @@ def part2():
 
 
 if __name__ == '__main__':
-    print(part1())  # 219512160 | 0.041 seconds
-    print(part2())  # 6398      | 3.20 seconds
+    print(part1())  # 219512160 | 0.00071 seconds
+    print(part2())  # 6398      | 3.40 seconds
