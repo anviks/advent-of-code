@@ -9,15 +9,15 @@ file0 = 'example.txt'
 data = [[list(map(int, lo[2:].split(','))) for lo in loc] for loc in parse_file_content(file, ('\n', ' '), str)]
 robots = [[Cell(*robot[0][::-1]), complex(*robot[1][::-1])] for robot in data]
 w, h = 101, 103
+cells, vectors = map(list, zip(*robots))  # type: ignore
 
 
 def move():
-    for robot in robots:
-        robot[0] += robot[1]
-        robot[0].row %= h
-        robot[0].column %= w
+    for i in range(len(robots)):
+        cells[i] += vectors[i]
+        cells[i].row %= h
+        cells[i].column %= w
 
-    cells = [robot[0] for robot in robots]
     quadrants = [0] * 4
 
     for cell in cells:
@@ -40,7 +40,6 @@ def part1():
 @stopwatch
 def part2():
     for i in range(100, 10_000):
-        cells = [robot[0] for robot in robots]
         move()
         if len(cells) == len(set(cells)):
             return i
@@ -48,5 +47,5 @@ def part2():
 
 
 if __name__ == '__main__':
-    print(part1())  # 219512160 | 0.07 seconds
-    print(part2())  # 6398      | 5.05 seconds
+    print(part1())  # 219512160 | 0.067 seconds
+    print(part2())  # 6398      | 4.93 seconds
