@@ -1,7 +1,5 @@
 from typing import Any, Generator, Literal
 
-from direction import Direction
-
 
 class Cell:
     __slots__ = ('row', 'column')
@@ -27,6 +25,11 @@ class Cell:
         return Cell(self.row, self.column + 1)
 
     def neighbours(self, nb_type: Literal['cardinal', 'diagonal', 'all']) -> Generator['Cell', Any, None]:
+        for nb in self.neighbour_directions(nb_type):
+            yield self + nb
+
+    @staticmethod
+    def neighbour_directions(nb_type: Literal['cardinal', 'diagonal', 'all']) -> tuple[tuple[int, int], ...]:
         if nb_type == 'cardinal':
             neighbours = ((0, 1), (1, 0), (0, -1), (-1, 0))
         elif nb_type == 'diagonal':
@@ -36,8 +39,7 @@ class Cell:
         else:
             raise ValueError(f'Invalid neighbour type: {nb_type}')
 
-        for nb in neighbours:
-            yield self + nb
+        return neighbours
 
     def manhattan_distance(self, other: 'Cell') -> int:
         """
@@ -142,9 +144,6 @@ class Cell:
             for _ in range(abs(d_col)):
                 current_col += col_step
                 yield Cell(current_row, current_col)
-
-    def move(self, direction: Direction, steps: int = 1) -> 'Cell':
-        return Cell(self.row + direction.row_delta * steps, self.column + direction.column_delta * steps)
 
     def _operate(self, other, op):
         if isinstance(other, Cell):
