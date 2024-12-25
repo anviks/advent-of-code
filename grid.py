@@ -1,4 +1,4 @@
-from typing import Any, Callable, Generator, Generic, Literal, Protocol, Sequence, TypeVar, TypeIs
+from typing import Any, Callable, Generator, Generic, Literal, Protocol, Sequence, Tuple, TypeVar, TypeIs
 
 from coordinates import Cell
 
@@ -61,6 +61,9 @@ class Grid(Generic[T]):
     def neighbours(self, cell: Cell, nb_type: Literal['cardinal', 'diagonal', 'all']) -> Generator[Cell, Any, None]:
         return (nb for nb in cell.neighbours(nb_type) if nb in self)
 
+    def neighbour_directions(self, cell: Cell, nb_type: Literal['cardinal', 'diagonal', 'all']) -> Generator[tuple[int, int], Any, None]:
+        return (direction for direction in cell.neighbour_directions(nb_type) if cell + direction in self)
+
     def copy(self) -> 'Grid':
         return Grid([row[:] for row in self.grid])
 
@@ -87,6 +90,11 @@ class Grid(Generic[T]):
         for row in self.grid:
             s += column_sep.join(map(str, row)) + row_sep
         return s
+
+    def get(self, cell: CoordSequence | Cell | int, default: T = None) -> T:
+        if cell in self:
+            return self[cell]
+        return default
 
     def __getitem__(self, cell: CoordSequence | Cell | int) -> T:
         if isinstance(cell, int):

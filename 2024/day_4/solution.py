@@ -1,16 +1,15 @@
 from utils_anviks import parse_file_content, stopwatch
 
+from coordinates import Cell
+from grid import Grid
+
 file = 'data.txt'
 file0 = 'example.txt'
 data = parse_file_content(file, ('\n', ''), str)
-grid = {
-    complex(i, j): data[i][j]
-    for i in range(len(data))
-    for j in range(len(data[i]))
-}
+grid = Grid(data)
 
 
-def find_xmas(coord: complex, direction: complex) -> bool:
+def find_xmas(coord: Cell, direction: tuple[int, int]) -> bool:
     chars = iter('AMX')
 
     for _ in range(3):
@@ -21,29 +20,22 @@ def find_xmas(coord: complex, direction: complex) -> bool:
     return True
 
 
-def find_mas(coord: complex) -> bool:
-    diagonals = [-1 - 1j, -1 + 1j, 1 + 1j, 1 - 1j, -1 - 1j]
-
-    return any(
-        grid.get(coord + a) == grid.get(coord + b) == 'M' and
-        grid.get(coord - a) == grid.get(coord - b) == 'S'
-        for a, b in zip(diagonals, diagonals[1:])
+def find_mas(coord: Cell) -> bool:
+    neighbours = list(grid.neighbours(coord, 'diagonal'))
+    return len(neighbours) == 4 and any(
+        grid[neighbours[i - 3]] == grid[neighbours[i - 2]] == 'M' and
+        grid[neighbours[i - 1]] == grid[neighbours[i]] == 'S'
+        for i in range(4)
     )
 
 
 @stopwatch
 def part1():
-    xmas_count = 0
-
-    for coord, value in grid.items():
-        if value == 'S':
-            for dir_x in range(-1, 2):
-                for dir_y in range(-1, 2):
-                    if dir_x == dir_y == 0:
-                        continue
-                    xmas_count += find_xmas(coord, complex(dir_x, dir_y))
-
-    return xmas_count
+    return sum(
+        find_xmas(coord, dir_)
+        for coord in grid.find('S')
+        for dir_ in grid.neighbour_directions(coord, 'all')
+    )
 
 
 @stopwatch
@@ -52,5 +44,5 @@ def part2():
 
 
 if __name__ == '__main__':
-    print(part1())  # 2685  | 0.024 seconds
-    print(part2())  # 2048  | 0.013 seconds
+    print(part1())  # 2685  | 0.154 seconds
+    print(part2())  # 2048  | 0.069 seconds
