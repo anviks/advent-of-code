@@ -40,6 +40,15 @@ def part2():
     gates_map = {tuple(op): value[0] for op, value in gates}
     expected = set()
 
+    def get_frags(gate: tuple[str, str, str]):
+        """
+        Get permutations of the gate, but only those, that are next to each other.
+        Meaning, if the gate is (('abc, 'XOR', 'def'), ...),
+        the result will be {('abc', 'XOR'), ('XOR', 'def'), ('def', 'XOR'), ('XOR', 'abc')}
+        """
+        op = gate
+        return {op[:2], op[1:], op[:0:-1], op[1::-1]}
+
     def add_gate(operation: tuple[str, str, str]):
         if None in operation:
             return None
@@ -52,7 +61,13 @@ def part2():
         else:
             gate = operation[::-1]
 
-        gate_name = gates_map.get(gate)
+        if gate not in gates_map:
+            diff_frags = {frag for frag in get_frags(gate)}
+            should_be = {name for g in gates if get_frags(g[0]) & diff_frags for name in g[0]}
+            gates_to_swap = {name for frag in diff_frags for name in frag} ^ should_be
+            raise ValueError(f'Gates to swap: {gates_to_swap}')
+
+        gate_name = gates_map[gate]
         expected.add((gate, (gate_name,)))
         return gate_name
 
@@ -68,21 +83,6 @@ def part2():
         add_gate((tl, 'XOR', out))
         mid = add_gate((tl, 'AND', out))
         out = add_gate((mid, 'OR', bl))
-
-    def get_frags(gate: tuple[tuple[str, ...]]):
-        """
-        Get permutations of the gate, but only those, that are next to each other.
-        Meaning, if the gate is (('abc, 'XOR', 'def'), ...),
-        the result will be {('abc', 'XOR'), ('XOR', 'def'), ('def', 'XOR'), ('XOR', 'abc')}
-        """
-        op = gate[0]
-        return {op[:2], op[1:], op[:0:-1], op[1::-1]}
-
-    if diff := list(expected - gates):
-        diff_frags = {frag for dif in diff for frag in get_frags(dif)}
-        should_be = {name for gate in gates if get_frags(gate) & diff_frags for name in gate[0]}
-        gates_to_swap = {name for frag in diff_frags for name in frag} ^ should_be
-        raise ValueError(f'Gates to swap: {gates_to_swap}')
 
 
 if __name__ == '__main__':
