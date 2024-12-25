@@ -1,4 +1,4 @@
-from utils_anviks import parse_file_content
+from utils_anviks import parse_file_content, stopwatch
 
 file = 'data.txt'
 file0 = 'example.txt'
@@ -31,6 +31,7 @@ def find_mas(coord: complex) -> bool:
     )
 
 
+@stopwatch
 def part1():
     xmas_count = 0
 
@@ -45,10 +46,11 @@ def part1():
     return xmas_count
 
 
+@stopwatch
 def part2():
     return sum(find_mas(coord) for coord, value in grid.items() if value == 'A')
 
 
 if __name__ == '__main__':
-    print(part1())  # 2685
-    print(part2())  # 2048
+    print(part1())  # 2685  | 0.024 seconds
+    print(part2())  # 2048  | 0.013 seconds
