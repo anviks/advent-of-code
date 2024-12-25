@@ -16,15 +16,11 @@ keys = [compress(schem) for schem in data if schem[6] == ['#'] * 5]
 
 @stopwatch
 def part1():
-    fitting = 0
-    for lock_col, key_col in product(locks, keys):
-        for i in range(5):
-            if lock_col[i] + key_col[i] > 5:
-                break
-        else:
-            fitting += 1
-    return fitting
+    return sum(
+        all(lock[i] + key[i] <= 5 for i in range(5))
+        for lock, key in product(locks, keys)
+    )
 
 
 if __name__ == '__main__':
-    print(part1())  # 3495  | 0.012 seconds
+    print(part1())  # 3495  | 0.030 seconds
