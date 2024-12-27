@@ -1,4 +1,5 @@
 from heapq import heappop, heappush
+from itertools import count
 
 from utils_anviks import parse_file_content, stopwatch
 
@@ -13,10 +14,10 @@ grid = Grid(data)
 @stopwatch
 def part1():
     start, end, direction = grid.find_first('S'), grid.find_first('E'), 1j
-    uid = 1
+    uid = count()
     paths = []
     visited = set()
-    heappush(paths, (0, 0, start, direction))
+    heappush(paths, (0, next(uid), start, direction))
     while paths:
         cost, _, loc, d = heappop(paths)
         if loc == end:
@@ -26,8 +27,8 @@ def part1():
         visited.add(loc)
         for dir_ in (d, d * 1j, d * -1j):
             if grid[loc + dir_] != '#':
-                uid += 1
-                heappush(paths, (cost + 1 + 1000 * (dir_ != d), uid, loc + dir_, dir_))
+                new_cost = cost + 1 + 1000 * (dir_ != d)
+                heappush(paths, (new_cost, next(uid), loc + dir_, dir_))
 
 
 def part2():
