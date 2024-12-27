@@ -119,6 +119,13 @@ class Grid(Generic[T]):
                     self.grid[cell.row][cell.column] = value
             else:
                 raise TypeError(f'Invalid index type: {type(key[0])}')
+        elif isinstance(key, slice):
+            if isinstance(key.start, Cell) and isinstance(key.stop, Cell):
+                for i in range(min(key.start.row, key.stop.row), max(key.start.row, key.stop.row) + 1):
+                    for j in range(min(key.start.column, key.stop.column), max(key.start.column, key.stop.column) + 1):
+                        self.grid[i][j] = value
+            else:
+                raise TypeError(f'Invalid index type, both start and stop must be Cell instances: {type(key.start)}, {type(key.stop)}')
         else:
             raise TypeError(f'Invalid index type: {type(key)}')
 
