@@ -1,3 +1,4 @@
+from collections import defaultdict
 from heapq import heappop, heappush
 from itertools import count
 
@@ -31,10 +32,32 @@ def part1():
                 heappush(paths, (new_cost, next(uid), loc + dir_, dir_))
 
 
+@stopwatch
 def part2():
-    pass
+    start, end, direction = grid.find_first('S'), grid.find_first('E'), 1j
+    uid = count()
+    todo = []
+    best_visited = set()
+    best = float('inf')
+    costs = defaultdict(lambda: float('inf'))
+    heappush(todo, (0, next(uid), start, direction, [start]))
+    while todo:
+        cost, _, loc, d, path = heappop(todo)
+        if cost > costs[loc, d]:
+            continue
+        else:
+            costs[loc, d] = cost
+        if loc == end and cost <= best:
+            best_visited.update(path)
+            best = cost
+        for dir_ in (d, d * 1j, d * -1j):
+            new_loc = loc + dir_
+            if grid[new_loc] != '#':
+                new_cost = cost + 1 + 1000 * (dir_ != d)
+                heappush(todo, (new_cost, next(uid), new_loc, dir_, path + [new_loc]))
+    return len(best_visited)
 
 
 if __name__ == '__main__':
     print(part1())  # 95444 | 0.060 seconds
-    print(part2())
+    print(part2())  # 513   | 5.35 seconds
