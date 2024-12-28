@@ -45,11 +45,12 @@ def part2():
         cost, _, loc, d, path = heappop(todo)
         if cost > costs[loc, d]:
             continue
-        else:
-            costs[loc, d] = cost
-        if loc == end and cost <= best:
-            best_visited.update(path)
-            best = cost
+        costs[loc, d] = cost
+        if loc == end:
+            if cost <= best:
+                best_visited.update(path)
+                best = cost
+            continue
         for dir_ in (d, d * 1j, d * -1j):
             new_loc = loc + dir_
             if grid[new_loc] != '#':
@@ -60,4 +61,4 @@ def part2():
 
 if __name__ == '__main__':
     print(part1())  # 95444 | 0.060 seconds
-    print(part2())  # 513   | 5.35 seconds
+    print(part2())  # 513   | 4.88 seconds
