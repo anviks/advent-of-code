@@ -1,5 +1,4 @@
-from heapq import heappop, heappush
-from itertools import combinations, count
+from itertools import combinations
 
 from utils_anviks import parse_file_content, stopwatch
 
@@ -12,19 +11,13 @@ data = parse_file_content(file, ('\n', ''), str)
 grid = Grid(data)
 
 start, end, direction = grid.find_first('S'), grid.find_first('E'), 1j
-uid = count()
-todo = []
-costs: dict[Cell, int] = {}
-heappush(todo, (0, next(uid), start, direction))
-while todo:
-    cost, _, loc, d = heappop(todo)  # type: int, int, Cell, complex
-    costs[loc] = cost
-    if loc == end:
-        break
+loc, d = start, direction
+costs: dict[Cell, int] = {loc: 0}
+while loc != end:
     for dir_ in (d, d * 1j, d * -1j):
-        new_loc = loc + dir_
-        if grid[new_loc] != '#':
-            heappush(todo, (cost + 1, next(uid), new_loc, dir_))
+        if grid[loc + dir_] != '#':
+            costs[loc + dir_], loc, d = costs[loc] + 1, loc + dir_, dir_
+            break
 
 
 def solve(max_cheat: int):
