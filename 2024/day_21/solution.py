@@ -18,6 +18,18 @@ directions = {
     (0, -1): '<',
 }
 
+dir_pad = Grid([
+    [None, '^', 'A'],
+    ['<', 'v', '>'],
+])
+
+num_pad = Grid([
+    ['7', '8', '9'],
+    ['4', '5', '6'],
+    ['1', '2', '3'],
+    [None, '0', 'A'],
+])
+
 dir_cache = {}
 
 
@@ -25,18 +37,10 @@ dir_cache = {}
 def keypad_to_press(res: str, depth: int, is_dir_keypad=False):
     possibilities = []
     if is_dir_keypad:
-        keys = Grid([
-            [None, '^', 'A'],
-            ['<', 'v', '>'],
-        ])
+        keys = dir_pad
         start = Cell(0, 2)
     else:
-        keys = Grid([
-            ['7', '8', '9'],
-            ['4', '5', '6'],
-            ['1', '2', '3'],
-            [None, '0', 'A'],
-        ])
+        keys = num_pad
         start = Cell(3, 2)
 
     for to_press in res:
@@ -55,10 +59,7 @@ def keypad_to_press(res: str, depth: int, is_dir_keypad=False):
                     possibilities[-1].append(path + 'A')
                 else:
                     sub_poss = keypad_to_press(path + 'A', depth - 1, True)
-                    shortest = min(map(len, sub_poss))
-                    for poss in sub_poss:
-                        if len(poss) == shortest:
-                            possibilities[-1].append(poss)
+                    possibilities[-1].append(sub_poss)
                 continue
 
             for nb_dir in keys.neighbour_directions(cell, 'cardinal'):
@@ -76,7 +77,7 @@ def keypad_to_press(res: str, depth: int, is_dir_keypad=False):
     for poss in product(*possibilities):
         str_possibilities.append(''.join(poss))
 
-    return str_possibilities
+    return sorted(str_possibilities)[0]
 
 
 @stopwatch
@@ -84,7 +85,7 @@ def part1():
     acc = 0
     for code in data:
         result = keypad_to_press(code, 2)
-        aaaa = min(map(len, result))
+        aaaa = len(result)
         acc += aaaa * int(code[:-1])
         print(aaaa, '*', int(code[:-1]))
     return acc
@@ -101,5 +102,5 @@ def part1():
 
 
 if __name__ == '__main__':
-    print(part1())  # 278748    | 0.013 seconds
+    print(part1())  # 278748    | 0.010 seconds
     # print(part2())
