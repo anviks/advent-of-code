@@ -1,4 +1,5 @@
 from collections import deque
+from functools import cache
 from itertools import product
 
 from utils_anviks import parse_file_content, stopwatch
@@ -53,6 +54,10 @@ def dir_keypad_to_press(res: str):
     return ''.join(pressed)
 
 
+dir_cache = {}
+
+
+@cache
 def keypad_to_press(res: str, depth: int, is_dir_keypad=False):
     """
     +---+---+---+
@@ -83,7 +88,7 @@ def keypad_to_press(res: str, depth: int, is_dir_keypad=False):
 
     for to_press in res:
         target = keys.find_first(to_press)
-        best = float('inf')
+        best = start.manhattan_distance(target)
         todo = deque([(start, '')])
         possibilities.append([])
         while todo:
@@ -93,12 +98,14 @@ def keypad_to_press(res: str, depth: int, is_dir_keypad=False):
                 continue
 
             if cell == target:
-                best = len(path)
                 if depth == 0:
                     possibilities[-1].append(path + 'A')
                 else:
-                    for poss in keypad_to_press(path + 'A', depth - 1, True):
-                        possibilities[-1].append(poss)
+                    sub_poss = keypad_to_press(path + 'A', depth - 1, True)
+                    shortest = min(map(len, sub_poss))
+                    for poss in sub_poss:
+                        if len(poss) == shortest:
+                            possibilities[-1].append(poss)
                 continue
 
             for nb_dir in keys.neighbour_directions(cell, 'cardinal'):
@@ -113,8 +120,7 @@ def keypad_to_press(res: str, depth: int, is_dir_keypad=False):
     for poss in product(*possibilities):
         str_possibilities.append(''.join(poss))
 
-    shortest = min(map(len, str_possibilities))
-    return [poss for poss in str_possibilities if len(poss) == shortest]
+    return str_possibilities
 
 
 @stopwatch
@@ -139,5 +145,5 @@ def part1():
 
 
 if __name__ == '__main__':
-    print(part1())  # 278748    | 1.89 seconds
+    print(part1())  # 278748    | 1.44 seconds
     # print(part2())
