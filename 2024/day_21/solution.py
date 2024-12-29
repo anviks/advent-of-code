@@ -1,22 +1,12 @@
-from collections import deque
 from functools import cache
-from itertools import product
 
 from utils_anviks import parse_file_content, stopwatch
 
-from coordinates import Cell
 from grid import Grid
 
 file = 'data.txt'
 file0 = 'example.txt'
 data = parse_file_content(file, ('\n',), str)
-
-directions = {
-    (1, 0): 'v',
-    (-1, 0): '^',
-    (0, 1): '>',
-    (0, -1): '<',
-}
 
 dir_pad = Grid([
     [None, '^', 'A'],
@@ -30,77 +20,51 @@ num_pad = Grid([
     [None, '0', 'A'],
 ])
 
-dir_cache = {}
+
+@cache
+def find_path(start: str, end: str):
+    keypad = dir_pad if start in '<v^>' or end in '<v^>' else num_pad
+    c_start = keypad.find_first(start)
+    c_end = keypad.find_first(end)
+    diff = c_end - c_start
+    y_move = diff.row * 'v' + -diff.row * '^'
+    x_move = diff.column * '>' + -diff.column * '<'
+
+    bad = complex(*tuple(keypad.find_first(None))[::-1]) - complex(*tuple(c_start)[::-1])
+    prefer_y = (diff.column > 0 or bad == diff.column) and bad != diff.row * 1j
+    result = y_move + x_move if prefer_y else x_move + y_move
+
+    return result + 'A'
 
 
 @cache
-def keypad_to_press(res: str, depth: int, is_dir_keypad=False):
-    possibilities = []
-    if is_dir_keypad:
-        keys = dir_pad
-        start = Cell(0, 2)
-    else:
-        keys = num_pad
-        start = Cell(3, 2)
+def keypress_length(code: str, depth: int):
+    if depth == 0:
+        return len(code)
+    total = 0
+    for i, char in enumerate(code):
+        total += keypress_length(find_path(code[i - 1], char), depth - 1)
+    return total
 
-    for to_press in res:
-        target = keys.find_first(to_press)
-        best = start.manhattan_distance(target)
-        todo = deque([(start, '')])
-        possibilities.append([])
-        while todo:
-            cell, path = todo.popleft()
 
-            if len(path) > best:
-                continue
-
-            if cell == target:
-                if depth == 0:
-                    possibilities[-1].append(path + 'A')
-                else:
-                    sub_poss = keypad_to_press(path + 'A', depth - 1, True)
-                    possibilities[-1].append(sub_poss)
-                continue
-
-            for nb_dir in keys.neighbour_directions(cell, 'cardinal'):
-                nb = cell + nb_dir
-                if keys[nb] is None:
-                    continue
-                next_key = directions[nb_dir]
-                if next_key in path and path[-1] != next_key:
-                    continue
-                todo.append((nb, path + next_key))
-        start = target
-
-    str_possibilities = []
-
-    for poss in product(*possibilities):
-        str_possibilities.append(''.join(poss))
-
-    return sorted(str_possibilities)[0]
+def solve(depth: int):
+    acc = 0
+    for code in data:
+        result = keypress_length(code, depth)
+        acc += result * int(code[:-1])
+    return acc
 
 
 @stopwatch
 def part1():
-    acc = 0
-    for code in data:
-        result = keypad_to_press(code, 2)
-        aaaa = len(result)
-        acc += aaaa * int(code[:-1])
-        print(aaaa, '*', int(code[:-1]))
-    return acc
+    return solve(3)
 
 
-# def part2():
-#     acc = 0
-#     for code in data:
-#         result = keypad_to_press(code, 25)
-#         aaaa = min(map(len, result))
-#         acc += aaaa * int(code[:-1])
-#         print(aaaa, '*', int(code[:-1]))
-#     return acc
+@stopwatch
+def part2():
+    return solve(26)
 
 
 if __name__ == '__main__':
-    print(part1())  # 278748    | 0.010 seconds
-    # print(part2())
+    print(part1())  # 278748            | 0.00034 seconds
+    print(part2())  # 337744744231414   | 0.00029 seconds
