@@ -18,58 +18,11 @@ directions = {
     (0, -1): '<',
 }
 
-
-def dir_keypad_to_press(res: str):
-    """
-        +---+---+
-        | ^ | A |
-    +---+---+---+
-    | < | v | > |
-    +---+---+---+
-    """
-    pressed = []
-    keys = '<v>^A'
-    idx = 4
-
-    for to_press in res:
-        target = keys.index(to_press)
-        while idx != target:
-            if idx > target:
-                if idx > target + idx % 3:
-                    idx -= 2
-                    pressed.append('v')
-                else:
-                    idx -= 1
-                    pressed.append('<')
-            else:
-                if target > idx + target % 3 and idx != 0:
-                    idx += 2
-                    pressed.append('^')
-                else:
-                    idx += 1
-                    pressed.append('>')
-        pressed.append('A')
-
-    print(''.join(pressed))
-    return ''.join(pressed)
-
-
 dir_cache = {}
 
 
 @cache
 def keypad_to_press(res: str, depth: int, is_dir_keypad=False):
-    """
-    +---+---+---+
-    | 7 | 8 | 9 |
-    +---+---+---+
-    | 4 | 5 | 6 |
-    +---+---+---+
-    | 1 | 2 | 3 |
-    +---+---+---+
-        | 0 | A |
-        +---+---+
-    """
     possibilities = []
     if is_dir_keypad:
         keys = Grid([
