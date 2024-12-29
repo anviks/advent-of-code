@@ -1,8 +1,21 @@
+from collections import deque
+from itertools import product
+
 from utils_anviks import parse_file_content, stopwatch
+
+from coordinates import Cell
+from grid import Grid
 
 file = 'data.txt'
 file0 = 'example.txt'
-data = parse_file_content(file0, ('\n',), str)
+data = parse_file_content(file, ('\n',), str)
+
+directions = {
+    (1, 0): 'v',
+    (-1, 0): '^',
+    (0, 1): '>',
+    (0, -1): '<',
+}
 
 
 def dir_keypad_to_press(res: str):
@@ -40,7 +53,7 @@ def dir_keypad_to_press(res: str):
     return ''.join(pressed)
 
 
-def num_keypad_to_press(res: str):
+def keypad_to_press(res: str, depth: int, is_dir_keypad=False):
     """
     +---+---+---+
     | 7 | 8 | 9 |
@@ -52,50 +65,78 @@ def num_keypad_to_press(res: str):
         | 0 | A |
         +---+---+
     """
-    pressed = []
-    keys = '0A123456789'
-    idx = 1
+    possibilities = []
+    if is_dir_keypad:
+        keys = Grid([
+            [None, '^', 'A'],
+            ['<', 'v', '>'],
+        ])
+        start = Cell(0, 2)
+    else:
+        keys = Grid([
+            ['7', '8', '9'],
+            ['4', '5', '6'],
+            ['1', '2', '3'],
+            [None, '0', 'A'],
+        ])
+        start = Cell(3, 2)
 
     for to_press in res:
-        target = keys.index(to_press)
-        while idx != target:
-            if idx > target:
-                if idx > target + (idx + 1) % 3 and idx != 2:
-                    idx -= 3
-                    pressed.append('v')
+        target = keys.find_first(to_press)
+        best = float('inf')
+        todo = deque([(start, '')])
+        possibilities.append([])
+        while todo:
+            cell, path = todo.popleft()
+
+            if len(path) > best:
+                continue
+
+            if cell == target:
+                best = len(path)
+                if depth == 0:
+                    possibilities[-1].append(path + 'A')
                 else:
-                    idx -= 1
-                    pressed.append('<')
-            else:
-                if target > idx + (target + 1) % 3:
-                    idx += 3
-                    pressed.append('^')
-                else:
-                    idx += 1
-                    pressed.append('>')
-        pressed.append('A')
+                    for poss in keypad_to_press(path + 'A', depth - 1, True):
+                        possibilities[-1].append(poss)
+                continue
 
-    print(''.join(pressed))
-    return ''.join(pressed)
+            for nb_dir in keys.neighbour_directions(cell, 'cardinal'):
+                nb = cell + nb_dir
+                if keys[nb] is None:
+                    continue
+                todo.append((nb, path + directions[nb_dir]))
+        start = target
+
+    str_possibilities = []
+
+    for poss in product(*possibilities):
+        str_possibilities.append(''.join(poss))
+
+    return str_possibilities
 
 
-
+@stopwatch
 def part1():
     acc = 0
     for code in data:
-        result = num_keypad_to_press(code)
-        print(len(result))
-        for _ in range(2):
-            result = dir_keypad_to_press(result)
-            print(len(result))
-        acc += len(result) * int(code[:-1])
+        result = keypad_to_press(code, 2)
+        aaaa = min(map(len, result))
+        acc += aaaa * int(code[:-1])
+        print(aaaa, '*', int(code[:-1]))
     return acc
 
 
-def part2():
-    pass
+# def part2():
+#     acc = 0
+#     for code in data:
+#         result = keypad_to_press(code, 25)
+#         aaaa = min(map(len, result))
+#         acc += aaaa * int(code[:-1])
+#         print(aaaa, '*', int(code[:-1]))
+#     return acc
 
 
 if __name__ == '__main__':
-    print(part1())
-    print(part2())
+    print(part1())  # 278748    | 5.07 seconds
+    # print(part2())
