@@ -110,7 +110,10 @@ def keypad_to_press(res: str, depth: int, is_dir_keypad=False):
 
             for nb_dir in keys.neighbour_directions(cell, 'cardinal'):
                 nb = cell + nb_dir
-                if keys[nb] is None:
+                val = keys[nb]
+                if val is None:
+                    continue
+                if val in path and path[-1] != val:
                     continue
                 todo.append((nb, path + directions[nb_dir]))
         start = target
@@ -145,5 +148,5 @@ def part1():
 
 
 if __name__ == '__main__':
-    print(part1())  # 278748    | 1.44 seconds
+    print(part1())  # 278748    | 0.21 seconds
     # print(part2())
