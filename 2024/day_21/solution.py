@@ -2,6 +2,7 @@ from functools import cache
 
 from utils_anviks import parse_file_content, stopwatch
 
+from coordinates import Cell
 from grid import Grid
 
 file = 'data.txt'
@@ -30,8 +31,8 @@ def find_path(start: str, end: str):
     y_move = diff.row * 'v' + -diff.row * '^'
     x_move = diff.column * '>' + -diff.column * '<'
 
-    bad = complex(*tuple(keypad.find_first(None))[::-1]) - complex(*tuple(c_start)[::-1])
-    prefer_y = (diff.column > 0 or bad == diff.column) and bad != diff.row * 1j
+    bad = keypad.find_first(None) - c_start
+    prefer_y = (diff.column > 0 or bad == Cell(0, diff.column)) and bad != Cell(diff.row, 0)
     result = y_move + x_move if prefer_y else x_move + y_move
 
     return result + 'A'
