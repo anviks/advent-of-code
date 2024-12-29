@@ -113,7 +113,8 @@ def keypad_to_press(res: str, depth: int, is_dir_keypad=False):
     for poss in product(*possibilities):
         str_possibilities.append(''.join(poss))
 
-    return str_possibilities
+    shortest = min(map(len, str_possibilities))
+    return [poss for poss in str_possibilities if len(poss) == shortest]
 
 
 @stopwatch
@@ -138,5 +139,5 @@ def part1():
 
 
 if __name__ == '__main__':
-    print(part1())  # 278748    | 5.07 seconds
+    print(part1())  # 278748    | 1.89 seconds
     # print(part2())
