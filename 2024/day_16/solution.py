@@ -2,9 +2,7 @@ from collections import defaultdict
 from heapq import heappop, heappush
 from itertools import count
 
-from utils_anviks import parse_file_content, stopwatch
-
-from grid import Grid
+from utils_anviks import parse_file_content, stopwatch, Grid
 
 file = 'data.txt'
 file0 = 'example.txt'
@@ -60,5 +58,5 @@ def part2():
 
 
 if __name__ == '__main__':
-    print(part1())  # 95444 | 0.060 seconds
-    print(part2())  # 513   | 4.88 seconds
+    print(part1())  # 95444 | 0.03 seconds
+    print(part2())  # 513   | 2.91 seconds

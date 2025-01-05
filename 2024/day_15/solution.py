@@ -1,7 +1,4 @@
-from utils_anviks import parse_file_content, parse_string, stopwatch
-
-from coordinates import Cell
-from grid import Grid
+from utils_anviks import parse_file_content, parse_string, stopwatch, Grid, Cell
 
 file = 'data.txt'
 file0 = 'example.txt'
@@ -87,5 +84,5 @@ def part2():
 
 
 if __name__ == '__main__':
-    print(part1())  # 1398947   | 0.123 seconds
-    print(part2())  # 1397393   | 0.144 seconds
+    print(part1())  # 1398947   | 0.095 seconds
+    print(part2())  # 1397393   | 0.110 seconds

@@ -1,8 +1,6 @@
 from typing import TypeVar
 
-from utils_anviks import parse_file_content, stopwatch
-
-from grid import Grid
+from utils_anviks import parse_file_content, stopwatch, Grid
 
 _T = TypeVar("_T")
 
@@ -27,7 +25,7 @@ def solution(part: int):
         total_loads = []
 
         for i in range(165):
-            tilt_cycle(data)
+            data = tilt_cycle(data)
             total_loads.append(calculate_total_load(data))
 
         cycle = find_cycle(total_loads)
@@ -67,10 +65,11 @@ def find_cycle(sequence: list[_T]) -> list[_T] | None:
     return None
 
 
-def tilt_cycle(rocks: Grid[str]) -> None:
+def tilt_cycle(rocks: Grid[str]) -> Grid[str]:
     for _ in range(4):
         tilt_north(rocks)
-        rocks.rotate_clockwise()
+        rocks = rocks.rotate_clockwise()
+    return rocks
 
 
 def tilt_north(rocks: Grid[str]) -> None:
@@ -93,4 +92,4 @@ def tilt_north(rocks: Grid[str]) -> None:
 
 if __name__ == '__main__':
     print(solution(1))  # 107142    | 0.004 seconds
-    print(solution(2))  # 104815    | 0.69 seconds
+    print(solution(2))  # 104815    | 0.62 seconds

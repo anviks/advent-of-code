@@ -1,9 +1,6 @@
 from functools import cache
 
-from utils_anviks import parse_file_content, stopwatch
-
-from coordinates import Cell
-from grid import Grid
+from utils_anviks import parse_file_content, stopwatch, Cell, Grid
 
 file = 'data.txt'
 file0 = 'example.txt'
@@ -67,5 +64,5 @@ def part2():
 
 
 if __name__ == '__main__':
-    print(part1())  # 278748            | 0.00034 seconds
+    print(part1())  # 278748            | 0.00027 seconds
     print(part2())  # 337744744231414   | 0.00029 seconds

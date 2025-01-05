@@ -1,8 +1,6 @@
 import math
 
-from utils_anviks import parse_file_content, stopwatch
-
-from coordinates import Cell
+from utils_anviks import parse_file_content, stopwatch, Cell
 
 file = 'data.txt'
 file0 = 'example.txt'
@@ -14,9 +12,8 @@ cells, vectors = map(list, zip(*robots))  # type: ignore
 
 def move(n: int = 1):
     for i in range(len(robots)):
-        cells[i] += vectors[i] * n
-        cells[i].row %= h
-        cells[i].column %= w
+        row, col = cells[i] + vectors[i] * n
+        cells[i] = Cell(row % h, col % w)
 
 
 @stopwatch
@@ -43,5 +40,5 @@ def part2():
 
 
 if __name__ == '__main__':
-    print(part1())  # 219512160 | 0.00071 seconds
-    print(part2())  # 6398      | 3.40 seconds
+    print(part1())  # 219512160 | 0.00051 seconds
+    print(part2())  # 6398      | 1.46 seconds

@@ -1,8 +1,6 @@
 from collections import deque
 
-from utils_anviks import parse_file_content, stopwatch
-
-from grid import Grid
+from utils_anviks import parse_file_content, stopwatch, Grid
 
 file = 'data.txt'
 file0 = 'example.txt'
@@ -37,5 +35,5 @@ def solution(part: int):
 
 
 if __name__ == '__main__':
-    print(solution(1))  # 593   | 0.021 seconds
-    print(solution(2))  # 1192  | 0.029 seconds
+    print(solution(1))  # 593   | 0.034 seconds
+    print(solution(2))  # 1192  | 0.048 seconds

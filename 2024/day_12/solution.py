@@ -1,7 +1,4 @@
-from utils_anviks import parse_file_content, stopwatch
-
-from coordinates import Cell
-from grid import Grid
+from utils_anviks import parse_file_content, stopwatch, Grid, Cell
 
 file = 'data.txt'
 file0 = 'example.txt'
@@ -51,4 +48,4 @@ def solution():
 
 
 if __name__ == '__main__':
-    print(*solution(), sep='\n')  # 1434856, 891106    | 0.23 seconds
+    print(*solution(), sep='\n')  # 1434856, 891106    | 0.08 seconds

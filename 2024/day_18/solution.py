@@ -1,9 +1,6 @@
 from collections import deque
 
-from utils_anviks import parse_file_content, stopwatch
-
-from coordinates import Cell
-from grid import Grid
+from utils_anviks import parse_file_content, stopwatch, Grid, Cell
 
 file = 'data.txt'
 file0 = 'example.txt'
@@ -51,5 +48,5 @@ def part2():
 
 
 if __name__ == '__main__':
-    print(part1())  # 272       | 0.024 seconds
-    print(part2())  # 16,44     | 0.038 seconds
+    print(part1())  # 272       | 0.027 seconds
+    print(part2())  # 16,44     | 0.046 seconds

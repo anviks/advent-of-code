@@ -1,9 +1,6 @@
 from itertools import combinations
 
-from utils_anviks import parse_file_content, stopwatch
-
-from coordinates import Cell
-from grid import Grid
+from utils_anviks import parse_file_content, stopwatch, Grid, Cell
 
 file = 'data.txt'
 file0 = 'example.txt'
@@ -42,5 +39,5 @@ def part2():
 
 
 if __name__ == '__main__':
-    print(part1())  # 1387      | 7.99 seconds
-    print(part2())  # 1015092   | 8.10 seconds
+    print(part1())  # 1387      | 3.71 seconds
+    print(part2())  # 1015092   | 3.81 seconds
