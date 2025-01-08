@@ -5,10 +5,12 @@ file0 = 'example.txt'
 data = parse_file_content(file, ('\n',), str)
 
 
+@stopwatch
 def part1():
     pass
 
 
+@stopwatch
 def part2():
     pass
 
