@@ -1,5 +1,6 @@
 import re
 
+import numpy as np
 from utils_anviks import stopwatch
 
 file = 'data.txt'
@@ -11,37 +12,34 @@ data = [(cmd, int(ax), int(ay), int(bx), int(by)) for cmd, ax, ay, bx, by in dat
 
 @stopwatch
 def part1():
-    grid = [[0 for _ in range(1000)] for _ in range(1000)]
+    grid = np.zeros((1000, 1000), dtype=int)
+
     for cmd, ax, ay, bx, by in data:
-        for i in range(ax, bx + 1):
-            for j in range(ay, by + 1):
-                if cmd == 'turn on':
-                    grid[i][j] = 1
-                elif cmd == 'turn off':
-                    grid[i][j] = 0
-                else:
-                    if grid[i][j] == 1:
-                        grid[i][j] = 0
-                    else:
-                        grid[i][j] = 1
-    return sum(sum(row) for row in grid)
+        if cmd == 'turn on':
+            grid[ax:bx + 1, ay:by + 1] = 1
+        elif cmd == 'turn off':
+            grid[ax:bx + 1, ay:by + 1] = 0
+        else:  # 'toggle'
+            grid[ax:bx + 1, ay:by + 1] ^= 1
+
+    return grid.sum()
 
 
 @stopwatch
 def part2():
-    grid = [[0 for _ in range(1000)] for _ in range(1000)]
+    grid = np.zeros((1000, 1000), dtype=int)
+
     for cmd, ax, ay, bx, by in data:
-        for i in range(ax, bx + 1):
-            for j in range(ay, by + 1):
-                if cmd == 'turn on':
-                    grid[i][j] += 1
-                elif cmd == 'turn off':
-                    grid[i][j] = max(0, grid[i][j] - 1)
-                else:
-                    grid[i][j] += 2
-    return sum(sum(row) for row in grid)
+        if cmd == 'turn on':
+            grid[ax:bx + 1, ay:by + 1] += 1
+        elif cmd == 'turn off':
+            grid[ax:bx + 1, ay:by + 1] = np.maximum(0, grid[ax:bx + 1, ay:by + 1] - 1)
+        else:  # 'toggle'
+            grid[ax:bx + 1, ay:by + 1] += 2
+
+    return grid.sum()
 
 
 if __name__ == '__main__':
-    print(part1())  # 569999    | 1.52 seconds
-    print(part2())  # 17836115  | 1.97 seconds
+    print(part1())  # 569999    | 0.027 seconds
+    print(part2())  # 17836115  | 0.076 seconds
