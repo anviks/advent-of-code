@@ -13,7 +13,7 @@ def get_chunks(digits: str):
     while r < len(digits):
         while r < len(digits) and digits[r] == digits[l]:
             r += 1
-        chunks.append(digits[l:r])
+        chunks.append((r - l, digits[l]))
         l = r
     return chunks
 
@@ -22,9 +22,9 @@ def get_chunks(digits: str):
 def look_and_say(digits: str):
     chunks = get_chunks(digits)
     digz = []
-    for chunk in chunks:
-        digz.append(str(len(chunk)))
-        digz.append(chunk[0])
+    for count, digit in chunks:
+        digz.append(str(count))
+        digz.append(digit)
     return ''.join(digz)
 
 
@@ -45,5 +45,5 @@ def part2():
 
 
 if __name__ == '__main__':
-    print(part1())  # 492982    | 0.53 seconds
-    print(part2())  # 6989950   | 7.45 seconds
+    print(part1())  # 492982    | 0.51 seconds
+    print(part2())  # 6989950   | 7.17 seconds
