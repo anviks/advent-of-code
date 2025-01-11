@@ -1,3 +1,5 @@
+from functools import cache
+
 from utils_anviks import parse_file_content, stopwatch
 
 file = 'data.txt'
@@ -16,12 +18,14 @@ def get_chunks(digits: str):
     return chunks
 
 
+@cache
 def look_and_say(digits: str):
     chunks = get_chunks(digits)
-    digits = ''
+    digz = []
     for chunk in chunks:
-        digits += str(len(chunk)) + chunk[0]
-    return digits
+        digz.append(str(len(chunk)))
+        digz.append(chunk[0])
+    return ''.join(digz)
 
 
 @stopwatch
@@ -41,5 +45,5 @@ def part2():
 
 
 if __name__ == '__main__':
-    print(part1())  # 492982    | 0.61 seconds
-    print(part2())  # 6989950   | 11.57 seconds
+    print(part1())  # 492982    | 0.53 seconds
+    print(part2())  # 6989950   | 7.45 seconds
