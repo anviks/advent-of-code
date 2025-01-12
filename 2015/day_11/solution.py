@@ -1,17 +1,15 @@
 import re
-from string import ascii_lowercase
 
 from utils_anviks import stopwatch
-
-file = 'data.txt'
-file0 = 'example.txt'
 
 
 def is_valid(password: str):
     if 'i' in password or 'o' in password or 'l' in password:
         return False
-    for chars in zip(ascii_lowercase, ascii_lowercase[1:], ascii_lowercase[2:]):
-        if ''.join(chars) in password:
+
+    for i in range(2, len(password)):
+        middle = ord(password[i - 1])
+        if ord(password[i - 2]) == middle - 1 and ord(password[i]) == middle + 1:
             break
     else:
         return False
@@ -45,6 +43,6 @@ if __name__ == '__main__':
     pass_0 = 'hepxcrrq'
     pass_1 = solve(pass_0)
     pass_2 = solve(increment_string(pass_1))
-    print(pass_1)  # hepxxyzz   | 0.89 seconds
-    print(pass_2)  # heqaabcc   | 2.26 seconds
+    print(pass_1)  # hepxxyzz   | 0.36 seconds
+    print(pass_2)  # heqaabcc   | 0.93 seconds
 
