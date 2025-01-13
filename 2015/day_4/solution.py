@@ -1,9 +1,8 @@
-from utils_anviks import parse_file_content, stopwatch
 import hashlib
 
-file = 'data.txt'
-file0 = 'example.txt'
-key = parse_file_content(file, (), str)
+from utils_anviks import stopwatch
+
+key = 'yzbqklnj'
 
 
 @stopwatch

@@ -1,7 +1,7 @@
 import re
 from itertools import batched
 
-from utils_anviks import parse_file_content, stopwatch
+from utils_anviks import stopwatch
 
 file = 'data.txt'
 file0 = 'example.txt'

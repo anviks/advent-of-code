@@ -1,10 +1,6 @@
 from functools import cache
 
-from utils_anviks import parse_file_content, stopwatch
-
-file = 'data.txt'
-file0 = 'example.txt'
-data = parse_file_content(file, (), str)
+from utils_anviks import stopwatch
 
 
 def get_chunks(digits: str):
@@ -29,21 +25,20 @@ def look_and_say(digits: str):
 
 
 @stopwatch
-def part1():
-    result = data
+def part1(digits: str):
     for _ in range(40):
-        result = look_and_say(result)
-    return len(result)
+        digits = look_and_say(digits)
+    return len(digits)
 
 
 @stopwatch
-def part2():
-    result = data
+def part2(digits: str):
     for _ in range(50):
-        result = look_and_say(result)
-    return len(result)
+        digits = look_and_say(digits)
+    return len(digits)
 
 
 if __name__ == '__main__':
-    print(part1())  # 492982    | 0.32 seconds
-    print(part2())  # 6989950   | 4.35 seconds
+    input_ = '1321131112'
+    print(part1(input_))  # 492982    | 0.32 seconds
+    print(part2(input_))  # 6989950   | 4.35 seconds
