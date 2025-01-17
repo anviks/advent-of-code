@@ -11,9 +11,7 @@ data = parse_file_content(file, ('\n',), int)
 def part1():
     result = 0
     for r in range(1, len(data) + 1):
-        for combo in combinations(data, r):
-            if sum(combo) == 150:
-                result += 1
+        result += sum(1 for combo in combinations(data, r) if sum(combo) == 150)
     return result
 
 
