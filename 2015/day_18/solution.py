@@ -12,18 +12,25 @@ def part1():
     neighbour_cache = {cell: list(grid.neighbours(cell, 'all')) for cell, v in grid.items()}
 
     for _ in range(100):
-        grid_copy = grid.copy()
-        for cell, v in grid_copy.items():
+        turn_on = []
+        turn_off = []
+
+        for cell, v in grid.items():
             on_neighbours = 0
             for nb in neighbour_cache[cell]:
-                if grid_copy[nb]:
+                if grid[nb]:
                     on_neighbours += 1
+
             if v:
                 if on_neighbours < 2 or on_neighbours > 3:
-                    grid[cell] = False
+                    turn_off.append(cell)
             else:
                 if on_neighbours == 3:
-                    grid[cell] = True
+                    turn_on.append(cell)
+
+        grid[turn_on] = True
+        grid[turn_off] = False
+
     return len(list(grid.find(True)))
 
 
@@ -50,5 +57,5 @@ def part2():
 
 
 if __name__ == '__main__':
-    print(part1())  # 768   | 5.9 seconds
+    print(part1())  # 768   | 5.86 seconds
     # print(part2())  # 781   | 15.20 seconds
