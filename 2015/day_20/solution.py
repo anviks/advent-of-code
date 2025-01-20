@@ -1,4 +1,4 @@
-from numba import jit
+import numpy as np
 from utils_anviks import parse_file_content, stopwatch
 
 file = 'data.txt'
@@ -6,41 +6,22 @@ file0 = 'example.txt'
 data = parse_file_content(file, (), int)
 
 
-def find_factors(n):
-    factors = set()
-    for i in range(1, int(n ** .5) + 1):
-        if n % i == 0:
-            factors.add(i)
-            factors.add(n // i)
-    return sorted(factors)
-
-
-@jit
-def factors_sum(n):
-    result = 0
-    for i in range(1, int(n ** .5) + 1):
-        if n % i == 0:
-            result += 1
-            if i != n // i:
-                result += n // i
-    return result
-
-
 @stopwatch
 def part1():
-    i = 1
-    while True:
-        sum1 = factors_sum(i) * 10
-        if sum1 >= data:
-            return i
-        i += 1
+    presents = np.zeros(data // 10, dtype=int)
+    for i in range(1, data // 10):
+        presents[i::i] += i * 10
+    return np.where(presents >= data)[0].min()
 
 
 @stopwatch
 def part2():
-    pass
+    presents = np.zeros(data // 10, dtype=int)
+    for i in range(1, data // 10):
+        presents[i:i*50:i] += i * 11
+    return np.where(presents >= data)[0].min()
 
 
 if __name__ == '__main__':
-    print(part1())  # 776160    | 2.83 seconds
-    print(part2())
+    print(part1())  # 776160    | 7.5 seconds
+    print(part2())  # 786240    | 7.4 seconds
