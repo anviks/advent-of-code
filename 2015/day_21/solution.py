@@ -66,13 +66,13 @@ def solve():
                 break
             hp -= max(1, boss_damage - armour)
 
-        if boss_hp <= 0 and cost < best_cost:
-            best_cost = cost
-        elif hp <= 0 and cost > worst_cost:
-            worst_cost = cost
+        if boss_hp <= 0:
+            best_cost = min(best_cost, cost)
+        else:
+            worst_cost = max(worst_cost, cost)
 
     return best_cost, worst_cost
 
 
 if __name__ == '__main__':
-    print(*solve())  # 121, 201 | 0.0025 seconds
+    print(*solve())  # 121 201 | 0.0025 seconds
