@@ -1,8 +1,10 @@
 from utils_anviks import parse_file_content, stopwatch
+from pathlib import Path
 
 file = 'data.txt'
 file0 = 'example.txt'
-data = parse_file_content(file, ('\n', ': ', ' '), int)
+file_path = str(Path(__file__).parent / file)
+data = parse_file_content(file_path, ('\n', ': ', ' '), int)
 
 
 def is_computable(value: int, operands: list[int], concat: bool) -> bool:

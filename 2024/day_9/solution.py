@@ -1,8 +1,10 @@
 from utils_anviks import parse_file_content, stopwatch
+from pathlib import Path
 
 file = 'data.txt'
 file0 = 'example.txt'
-data = parse_file_content(file, ('',), int)
+file_path = str(Path(__file__).parent / file)
+data = parse_file_content(file_path, ('',), int)
 # Example: [(2+1j), (3+0j), (3+2j), (3+0j), (1+3j), (3+0j), (3+4j), (1+0j), (2+5j), ...]
 data1 = [data[i - 2] + (1 - i % 2) * i * .5j for i in range(2, len(data) + 2)]
 data2 = data1.copy()

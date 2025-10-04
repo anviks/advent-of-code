@@ -1,9 +1,11 @@
 from utils_anviks import parse_file_content, stopwatch
 from collections import Counter, defaultdict
+from pathlib import Path
 
 file = 'data.txt'
 file0 = 'example.txt'
-data = parse_file_content(file, (' ',), int)
+file_path = str(Path(__file__).parent / file)
+data = parse_file_content(file_path, (' ',), int)
 
 
 def blink(c1: Counter):

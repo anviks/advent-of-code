@@ -2,10 +2,12 @@ import json
 import re
 
 from utils_anviks import parse_file_content, stopwatch
+from pathlib import Path
 
 file = 'data.txt'
 file0 = 'example.txt'
-data = parse_file_content(file, (), str)
+file_path = str(Path(__file__).parent / file)
+data = parse_file_content(file_path, (), str)
 
 
 @stopwatch

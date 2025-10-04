@@ -1,10 +1,12 @@
 from collections import defaultdict
 
 from utils_anviks import parse_file_content, parse_string, stopwatch
+from pathlib import Path
 
 file = 'data.txt'
 file0 = 'example.txt'
-data = parse_file_content(file, ('\n\n',), str)
+file_path = str(Path(__file__).parent / file)
+data = parse_file_content(file_path, ('\n\n',), str)
 rules, updates = data
 rules = parse_string(rules, ('\n', '|'), int)
 updates = parse_string(updates, ('\n', ','), int)

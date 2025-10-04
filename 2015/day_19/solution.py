@@ -2,10 +2,12 @@ from collections import defaultdict
 from random import shuffle
 
 from utils_anviks import parse_file_content, parse_string, stopwatch
+from pathlib import Path
 
 file = 'data.txt'
 file0 = 'example.txt'
-data = parse_file_content(file, ('\n\n',), str)
+file_path = str(Path(__file__).parent / file)
+data = parse_file_content(file_path, ('\n\n',), str)
 replacements = parse_string(data[0], ('\n', ' => '), str)
 replacement_dict = defaultdict(list)
 

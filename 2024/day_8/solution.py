@@ -2,10 +2,12 @@ from collections import defaultdict
 from itertools import permutations
 
 from utils_anviks import parse_file_content, stopwatch
+from pathlib import Path
 
 file = 'data.txt'
 file0 = 'example.txt'
-data = parse_file_content(file, ('\n',), str)
+file_path = str(Path(__file__).parent / file)
+data = parse_file_content(file_path, ('\n',), str)
 grid = {
     complex(i, j): data[i][j]
     for i in range(len(data))

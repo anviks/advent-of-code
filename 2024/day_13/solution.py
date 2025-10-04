@@ -2,10 +2,12 @@ import re
 
 import numpy as np
 from utils_anviks import parse_file_content, stopwatch
+from pathlib import Path
 
 file = 'data.txt'
 file0 = 'example.txt'
-data = parse_file_content(file, ('\n\n', '\n'), str)
+file_path = str(Path(__file__).parent / file)
+data = parse_file_content(file_path, ('\n\n', '\n'), str)
 data = [[tuple(map(int, re.search(r': X[+=](\d+), Y[+=](\d+)', s).groups())) for s in seq] for seq in data]
 
 
