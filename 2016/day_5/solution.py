@@ -1,11 +1,28 @@
 from pathlib import Path
 from utils_anviks import parse_file_content, stopwatch
 from hashlib import md5
+import random
 
 file = "data.txt"
 file0 = "example.txt"
 file_path = str(Path(__file__).parent / file)
 data = parse_file_content(file_path, (), str)
+
+
+class Color:
+    HEADER = "\033[95m"
+    OKBLUE = "\033[94m"
+    OKCYAN = "\033[96m"
+    OKGREEN = "\033[92m"
+    WARNING = "\033[93m"
+    FAIL = "\033[91m"
+    ENDC = "\033[0m"
+    BOLD = "\033[1m"
+    UNDERLINE = "\033[4m"
+
+
+def get_hash_hex(base_bytes: bytes, num: int):
+    return md5(base_bytes + str(num).encode()).hexdigest()
 
 
 @stopwatch
@@ -15,7 +32,7 @@ def part1():
     data_bytes = data.encode()
 
     while len(result) < 8:
-        hashed = md5(data_bytes + str(i).encode()).hexdigest()
+        hashed = get_hash_hex(data_bytes, i)
         if hashed[:5] == "00000":
             result += hashed[5]
         i += 1
@@ -30,7 +47,7 @@ def part2():
     data_bytes = data.encode()
 
     while j < 8:
-        hashed = md5(data_bytes + str(i).encode()).hexdigest()
+        hashed = get_hash_hex(data_bytes, i)
         if (
             hashed[:5] == "00000"
             and hashed[5].isdigit()
@@ -40,6 +57,17 @@ def part2():
             result[pos] = hashed[6]
             j += 1
         i += 1
+
+        if i % 30000 == 0:
+            for char in result:
+                if char == "":
+                    print(
+                        f"{Color.WARNING}{random.randint(0, 15):x}{Color.ENDC}", end=""
+                    )
+                else:
+                    print(Color.OKGREEN + char + Color.ENDC, end="")
+
+            print("\r", end="")
 
     return "".join(result)
 
