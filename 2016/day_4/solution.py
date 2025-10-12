@@ -46,5 +46,5 @@ def part2():
 
 
 if __name__ == "__main__":
-    print(part1())  # 137896
-    print(part2())  # 501
+    print(part1())  # 137896    | 0.00553 seconds
+    print(part2())  # 501       | 0.00112 seconds

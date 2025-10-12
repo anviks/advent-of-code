@@ -5,14 +5,13 @@ from utils_anviks import parse_file_content, stopwatch
 file = "data.txt"
 file0 = "example.txt"
 file_path = str(Path(__file__).parent / file)
-_data = parse_file_content(file_path, ("\n",), str)
+_data = parse_file_content(file_path, ("\n", re.compile(r" +")), str)
 data = []
 
 for triangle in _data:
-    split_triangle = re.split(r" +", triangle)
-    if split_triangle[0] == "":
-        split_triangle = split_triangle[1:]
-    sides = [int(side) for side in split_triangle]
+    if triangle[0] == "":
+        triangle = triangle[1:]
+    sides = [int(side) for side in triangle]
     data.append(sides)
 
 
@@ -43,5 +42,5 @@ def part2():
 
 
 if __name__ == "__main__":
-    print(part1())  # 983
-    print(part2())  # 1836
+    print(part1())  # 983   | 0.00059 seconds
+    print(part2())  # 1836  | 0.00107 seconds
