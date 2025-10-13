@@ -21,25 +21,14 @@ def has_abba(s: str) -> bool:
 
 @stopwatch
 def part1():
-    ips = 0
-
-    for ip in data:
-        for bracket in ip[1::2]:
-            if has_abba(bracket):
-                break
-        else:
-            for segment in ip[::2]:
-                if has_abba(segment):
-                    ips += 1
-                    break
-
-    return ips
+    return sum(
+        has_abba(";".join(ip[::2])) and not has_abba(";".join(ip[1::2])) for ip in data
+    )
 
 
 @stopwatch
 def part2():
     ips = 0
-
     abas = []
 
     for pair in permutations(ascii_lowercase, 2):
@@ -48,23 +37,17 @@ def part2():
 
     for ip in data:
         for aba in abas:
-            for segment in ip[::2]:
-                if aba in segment:
-                    break
-            else:
+            if aba not in ";".join(ip[::2]):
                 continue
+
             bab = aba[1] + aba[0] + aba[1]
-            for bracket in ip[1::2]:
-                if bab in bracket:
-                    ips += 1
-                    break
-            else:
-                continue
-            break
+            if bab in ";".join(ip[1::2]):
+                ips += 1
+                break
 
     return ips
 
 
 if __name__ == "__main__":
-    print(part1())  # 118   | 0.02861 seconds
-    print(part2())  # 260   | 0.22487 seconds
+    print(part1())  # 118   | 0.021 seconds
+    print(part2())  # 260   | 0.22 seconds
