@@ -14,7 +14,8 @@ initial, trades = partition(lambda s: s.startswith("bot"), data)
 @stopwatch
 def solve():
     bots: defaultdict[str, list[int]] = defaultdict(list)
-    outputs = {}
+    outputs: defaultdict[str, list[int]] = defaultdict(list)
+    dest = {"bot": bots, "output": outputs}
 
     for init in initial:
         value, bot = re.findall(r"\d+", init)
@@ -24,33 +25,30 @@ def solve():
 
     for trade in trades:
         trader = r"(bot|output) (\d+)"
-        source_bot, low_type, low_num, high_type, high_num = re.search(rf"(\d+).*{trader}.*{trader}", trade).groups()  # type: ignore
-        trade_dict[source_bot] = (low_type, low_num, high_type, high_num)
+        src, low_t, low_n, high_t, high_n = re.search(rf"(\d+).*{trader}.*{trader}", trade).groups()  # type: ignore
+        trade_dict[src] = (low_t, low_n, high_t, high_n)
 
-    result_bot = -1
+    result_bot = None
 
     while True:
-        for source_bot, chips in bots.copy().items():
-            if len(chips) == 2:
-                chips.sort()
-                if chips == [17, 61]:
-                    result_bot = int(source_bot)
-                low_type, low_num, high_type, high_num = trade_dict[source_bot]
+        ready = [bot for bot, chips in bots.items() if len(chips) == 2]
+        if not ready:
+            break
 
-                low = chips.pop(0)
-                if low_type == "bot":
-                    bots[low_num].append(low)
-                else:
-                    outputs[low_num] = low
+        for bot in ready:
+            chips = sorted(bots.pop(bot))
+            low, high = chips
 
-                high = chips.pop(0)
-                if high_type == "bot":
-                    bots[high_num].append(high)
-                else:
-                    outputs[high_num] = high
+            if chips == [17, 61]:
+                result_bot = int(bot)
 
-                if result_bot >= 0 and outputs.keys() & set("012") == set("012"):
-                    return result_bot, outputs["0"] * outputs["1"] * outputs["2"]
+            low_t, low_n, high_t, high_n = trade_dict[bot]
+
+            dest[low_t][low_n].append(low)
+            dest[high_t][high_n].append(high)
+
+            if result_bot is not None and outputs.keys() & set("012") == set("012"):
+                return result_bot, outputs["0"][0] * outputs["1"][0] * outputs["2"][0]
 
 
 if __name__ == "__main__":
