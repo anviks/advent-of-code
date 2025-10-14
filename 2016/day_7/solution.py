@@ -7,7 +7,7 @@ from string import ascii_lowercase
 
 file = "data.txt"
 file0 = "example.txt"
-file_path = str(Path(__file__).parent / file)
+file_path = Path(__file__).parent / file
 data = parse_file_content(file_path, ("\n", re.compile(r"[\[\]]")), str)
 
 
