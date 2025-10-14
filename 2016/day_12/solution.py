@@ -7,28 +7,33 @@ file_path = str(Path(__file__).parent / file)
 data = parse_file_content(file_path, ("\n", " "), str)
 
 
-class Assembler:
+class Interpreter:
     def __init__(self, instructions: list[list[str]], *, reg_c: int = 0) -> None:
-        self.a = 0
-        self.b = 0
-        self.c = reg_c
-        self.d = 0
+        self.reg = {
+            'a': 0,
+            'b': 0,
+            'c': reg_c,
+            'd': 0,
+        }
 
         self.instructions = instructions
         self.pointer = 0
+    
+    def get_value(self, x: str):
+        return int(x) if x.isdigit() else self.reg[x]
 
     def cpy(self, x: str, y: str):
-        val = int(x) if x.isdigit() else getattr(self, x)
-        setattr(self, y, val)
+        val = self.get_value(x)
+        self.reg[y] = val
 
     def inc(self, x: str):
-        setattr(self, x, getattr(self, x) + 1)
+        self.reg[x] += 1
 
     def dec(self, x: str):
-        setattr(self, x, getattr(self, x) - 1)
+        self.reg[x] -= 1
 
     def jnz(self, x: str, y: str):
-        val = int(x) if x.isdigit() else getattr(self, x)
+        val = self.get_value(x)
         if val != 0:
             self.pointer += int(y) - 1
 
@@ -41,16 +46,16 @@ class Assembler:
 
 @stopwatch
 def part1():
-    assembler = Assembler(data)
-    assembler.execute()
-    return assembler.a
+    interpreter = Interpreter(data)
+    interpreter.execute()
+    return interpreter.reg['a']
 
 
 @stopwatch
 def part2():
-    assembler = Assembler(data, reg_c=1)
-    assembler.execute()
-    return assembler.a
+    interpreter = Interpreter(data, reg_c=1)
+    interpreter.execute()
+    return interpreter.reg['a']
 
 
 if __name__ == "__main__":
