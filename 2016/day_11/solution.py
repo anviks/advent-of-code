@@ -57,16 +57,13 @@ def is_valid_floor(floor: tuple[int, ...]):
 
 def solve(input_data: list[list[list[str]]]):
     items_tuple = get_items_as_numbers(input_data)
-    print(items_tuple)
-
     initial = (0, items_tuple)
-    queue = [(0, initial)]
+    queue = [(0, 0, initial)]
     heapify(queue)
-
     seen = set()
 
     while queue:
-        cost, state = heappop(queue)
+        _, cost, state = heappop(queue)
         elevator, floors = state
 
         if elevator == 3 and all(len(floor) == 0 for floor in floors[:-1]):
@@ -103,7 +100,12 @@ def solve(input_data: list[list[list[str]]]):
                     continue
 
                 seen.add((elevator + direction, new_floors_tuple))
-                heappush(queue, (cost + 1, (elevator + direction, new_floors_tuple)))
+                # prioritise states with more progress
+                priority = cost - len(new_floors[3]) * 5
+                heappush(
+                    queue,
+                    (priority, cost + 1, (elevator + direction, new_floors_tuple)),
+                )
 
 
 @stopwatch
@@ -127,5 +129,5 @@ def part2():
 
 
 if __name__ == "__main__":
-    print(part1())  # 33    | 3.38 seconds
-    print(part2())  # 57    | 303.01 seconds
+    print(part1())  # 33    | 0.042 seconds
+    print(part2())  # 57    | 18.62 seconds
