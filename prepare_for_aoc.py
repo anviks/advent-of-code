@@ -20,7 +20,7 @@ def get_int_input(prompt: str, default: int) -> int:
 def get_bool_input(prompt: str) -> bool:
     while True:
         answer = input(prompt).lower()
-        if answer in ("y", "yes"):
+        if answer in ("", "y", "yes"):
             return True
         elif answer in ("n", "no"):
             return False
@@ -166,7 +166,7 @@ def main():
         )
 
     create_files(start_year, years_count, start_day, days_count)
-    if get_bool_input("Do you want to fetch the input data? (Y/N): "):
+    if get_bool_input("Do you want to fetch the input data? (Y/n): "):
         get_input_data(
             login_url, email, password, start_year, years_count, start_day, days_count
         )
