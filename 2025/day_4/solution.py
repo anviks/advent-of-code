@@ -40,10 +40,8 @@ def part2():
                 roll_coords.add((i, j))
 
     total_removed = 0
-    temp_removed = -1
 
-    # Run until none can be removed
-    while temp_removed != 0:
+    while True:
         temp_removed = 0
 
         for roll in roll_coords.copy():
@@ -54,6 +52,10 @@ def part2():
             if nbs <= 3:
                 roll_coords.remove(roll)
                 temp_removed += 1
+
+        # Break if none can be removed
+        if temp_removed == 0:
+            break
 
         total_removed += temp_removed
 
