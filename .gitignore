@@ -1,4 +1,5 @@
-.idea
+.idea/
+.vscode/
 .env
 
 # Ignore input files and task descriptions as per Eric's request (https://adventofcode.com/about#faq_copying)
