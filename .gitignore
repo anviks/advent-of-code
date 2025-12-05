@@ -6,6 +6,7 @@
 # and all files other than solution.py
 /*/*/*
 !/*/*/solution*.py
+!/2025/day_4/wasteland.py
 
 # Ignore unsolved years
 /2017
