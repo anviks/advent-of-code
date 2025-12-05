@@ -35,7 +35,7 @@ def part2():
 
         for i in range(12, len(bank)):
             for j in range(1, 12):
-                # If next digit is larger, shift the right half one slot to the left
+                # If next digit is larger, shift the right half one slot to the right
                 if batteries[j - 1] < batteries[j]:
                     for k in range(j, 12):
                         batteries[k - 1] = batteries[k]
