@@ -27,15 +27,11 @@ def optimize_ranges():
 
 @stopwatch
 def part1():
-    fresh = 0
-
-    for ingredient in available:
-        for start, stop in ranges:
-            if start <= ingredient <= stop:
-                fresh += 1
-                break
-
-    return fresh
+    return sum(
+        start <= ingredient <= stop
+        for ingredient in available
+        for start, stop in ranges
+    )
 
 
 @stopwatch
@@ -45,5 +41,5 @@ def part2():
 
 if __name__ == "__main__":
     optimize_ranges()  #                | 0.00004 seconds
-    print(part1())  # 707               | 0.0021 seconds
+    print(part1())  # 707               | 0.0038 seconds
     print(part2())  # 361615643045059   | 0.00001 seconds
