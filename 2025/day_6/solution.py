@@ -5,22 +5,14 @@ from utils_anviks import parse_file_content, stopwatch
 file = "data.txt"
 file0 = "example.txt"
 file_path = Path(__file__).parent / file
-data = parse_file_content(file_path, ("\n", re.compile(r" +")), str)
 lines = parse_file_content(file_path, ("\n",), str)
 
 
 @stopwatch
 def part1():
-    # Remove empty strings
-    problems = [[col for col in row if col] for row in data]
-    problems = list(zip(*problems))
-    result = 0
-
-    # Join ('123', '45', '6', '*') into 123*45*6
-    for problem in problems:
-        result += eval(problem[-1].join(problem[:-1]))
-
-    return result
+    problems = map(str.split, open(file_path))
+    # Join each ('123', '45', '6', '*') into 123*45*6
+    return sum(eval(problem[-1].join(problem[:-1])) for problem in zip(*problems))
 
 
 @stopwatch
