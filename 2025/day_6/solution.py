@@ -5,14 +5,13 @@ from utils_anviks import parse_file_content, stopwatch
 file = "data.txt"
 file0 = "example.txt"
 file_path = Path(__file__).parent / file
-lines = parse_file_content(file_path, ("\n",), str)
 
 
 @stopwatch
 def part1():
     problems = map(str.split, open(file_path))
     # Join each ('123', '45', '6', '*') into 123*45*6
-    return sum(eval(problem[-1].join(problem[:-1])) for problem in zip(*problems))
+    return sum(eval(op.join(nums)) for *nums, op in zip(*problems))
 
 
 @stopwatch
@@ -21,7 +20,7 @@ def part2():
     active_op = ""
 
     # Read vertically, if digits are all spaces, insert +, otherwise insert number and last seen operator
-    for *digits, op in zip(*lines):
+    for *digits, op in zip(*open(file_path)):
         num = "".join(digits).strip()
         if not num:
             expression = expression[:-1] + "+"
