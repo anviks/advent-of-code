@@ -1,37 +1,57 @@
-from itertools import product
-from math import sqrt
+from itertools import combinations, product
+from math import sqrt, prod
 from pathlib import Path
 from utils_anviks import parse_file_content, stopwatch
 import networkx as nx
 
-file = 'data.txt'
-file0 = 'example.txt'
-file_path = Path(__file__).parent / file0
-data = [tuple(line) for line in parse_file_content(file_path, ('\n', ','), int)]
+file = "data.txt"
+file0 = "example.txt"
+file_path = Path(__file__).parent / file
+data = [tuple(line) for line in parse_file_content(file_path, ("\n", ","), int)]
 
 
 @stopwatch
 def part1():
-    box_pairs = [(x,y) for x in data for y in data if x != y]
-    box_pairs.sort(key=lambda boxes: sqrt(sum((boxes[1][i] - boxes[0][i]) ** 2 for i in range(3))))
+    box_pairs = list(combinations(data, 2))
+    box_pairs.sort(
+        key=lambda boxes: sqrt(sum((boxes[1][i] - boxes[0][i]) ** 2 for i in range(3)))
+    )
 
     circuits: list[set[tuple[int, ...]]] = []
 
+    counter = 0
+
     for box1, box2 in box_pairs:
+        box1_circ = box2_circ = None
         for circ in circuits:
-            if box1 in circ or box2 in circ:
-                circ.add(box1)
-                circ.add(box2)
-                break
-        else:
-            circuits.append({box1, box2})
-    
+            if box1 in circ:
+                box1_circ = circ
+            elif box2 in circ:
+                box2_circ = circ
+
+        match box1_circ, box2_circ:
+            case None, None:
+                circuits.append({box1, box2})
+            case _, None:
+                box1_circ.add(box2)
+            case None, _:
+                box2_circ.add(box1)
+            case _, _:
+                box1_circ.update(box2_circ)
+                box2_circ.clear()
+
+        counter += 1
+        if counter == 1000:
+            break
+
+    return prod(sorted(map(len, filter(None, circuits)), reverse=True)[:3])
+
 
 @stopwatch
 def part2():
     pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(part1())
     print(part2())
