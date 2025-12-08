@@ -1,5 +1,5 @@
 from itertools import combinations
-from math import sqrt, prod
+from math import sqrt, prod, dist
 from pathlib import Path
 from utils_anviks import parse_file_content, stopwatch
 
@@ -9,9 +9,7 @@ file_path = Path(__file__).parent / file
 data = [tuple(line) for line in parse_file_content(file_path, ("\n", ","), int)]
 
 box_pairs = list(combinations(data, 2))
-box_pairs.sort(
-    key=lambda boxes: sqrt(sum((boxes[1][i] - boxes[0][i]) ** 2 for i in range(3)))
-)
+box_pairs.sort(key=lambda boxes: dist(*boxes))
 
 
 @stopwatch
